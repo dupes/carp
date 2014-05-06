@@ -1,0 +1,35 @@
+import glob
+
+#get all the build variables we need
+Import('env', 'project', 'mymode', 'debugcflags', 'releasecflags', 'shared', 'libs')
+# Export('env', 'mymode', 'debugcflags', 'releasecflags', 'shared')
+localenv = env.Clone()
+
+buildroot = '../' + mymode  #holds the root of the build directory tree
+builddir = buildroot + '/' + project   #holds the build directory for this project
+targetpath = builddir + '/' + project  #holds the path to the executable in the build directory
+
+#append the user's additional compile flags
+#assume debugcflags and releasecflags are defined
+if mymode == 'debug':
+   localenv.Append(CCFLAGS=debugcflags)
+else:
+   localenv.Append(CCFLAGS=releasecflags)
+
+#specify the build directory
+# localenv.BuildDir(builddir, ".", duplicate=0)
+localenv.VariantDir(builddir, ".", duplicate=0)
+
+srclst = map(lambda x: builddir + '/' + x, glob.glob('*.cpp'))
+
+# shared files
+srclst += map(lambda x: builddir + '/' + x, glob.glob('shared/*.cpp'))
+
+
+#for file in shared:
+#    srclst.append(file)
+#srclst.append("../debug/contours/shared/CVWindow.cpp")
+
+print srclst
+
+localenv.Program(targetpath, source=srclst, LIBS=libs)
