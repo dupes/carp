@@ -35,6 +35,7 @@ private:
 	tFrame *m_tframe;
 
 	tObject *m_object;
+	vector<tObject*> m_homographyPoints;
 
 	int m_trackBarValue;
 
@@ -46,6 +47,8 @@ private:
 	void handleMouseButtonClick(int event, int x, int y, int flags);
 
 	void findObject(int x, int y);
+	void findHomography();
+
 	void findMatching();
 	void saveLabels();
 	void setLabelFilter();

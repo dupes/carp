@@ -85,6 +85,8 @@ void MainWindow::displayFrame()
 	}
 
 	m_main.showImage(frame);
+
+	m_homographyPoints.clear();
 }
 
 /*********************************************************************/
@@ -222,6 +224,26 @@ void MainWindow::findObject(int x, int y)
 
 /*********************************************************************/
 
+void MainWindow::findHomography()
+{
+
+	printf("find h\n");
+
+	m_homographyPoints.push_back(m_object);
+
+	if (m_homographyPoints.size() < 4)
+		return;
+
+	// printf("4 points selected\n");
+
+	Point2f src[4];
+	Point2f dest[4];
+
+	m_homographyPoints.clear();
+}
+
+/*********************************************************************/
+
 void MainWindow::findMatching()
 {
 	Mat image = m_tframe->original_image.clone();
@@ -296,8 +318,8 @@ void MainWindow::printCommands()
 	printf(" right arrow key: forward 10 frames\n");
 	printf(" m: find matching objects\n");
 	printf(" s: save matching objects; will be prompted for label\n");
-	printf(" f: set filter label\n");
-	printf(" d: display labeled objects");
+	printf(" f: save homography point\n");
+	printf(" d: display labeled objects\n");
 }
 
 /*********************************************************************/
@@ -314,7 +336,7 @@ void MainWindow::loop(string videoName, int numFrames)
 	if (!m_video.loadVideo(videoName, numFrames, true))
 	{
 		printf("failed to load video: %s, %s\n", videoName.c_str(), Shared::database.getErrorMessage());
-		// printf("message: %s\n", Shared::database.getErrorMessage());
+		// printf("message: %s\n", Shared::datam_objectbase.getErrorMessage());
 		return;
 	}
 
@@ -364,10 +386,10 @@ void MainWindow::loop(string videoName, int numFrames)
 				saveLabels();
 				break;
 
-			case 'f':
+			/*case 'f':
 				setLabelFilter();
 				break;
-
+			*/
 			case 'd':
 				if (m_showLabeledObjects)
 				{
@@ -394,6 +416,10 @@ void MainWindow::loop(string videoName, int numFrames)
 					delay = -1;
 				}
 
+				break;
+
+			case 'f':
+				findHomography();
 				break;
 
 			case 'm':
