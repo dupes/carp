@@ -33,7 +33,7 @@ FindContours::~FindContours()
 
 /**************************************************************/
 
-void FindContours::findContours(tVideo *video, Mat &image, Mat &original, int frameNumber)
+void FindContours::findContours(tVideo *video, Mat &image, Mat &original, int window, int frameNumber)
 {
 	Mat boxImage;
 	Mat scratch;
@@ -75,24 +75,33 @@ void FindContours::findContours(tVideo *video, Mat &image, Mat &original, int fr
 	{
 		Rect rect = boundingRect(contours[i]);
 
-		// drawContours(boxImage, contours, i, CV_RGB(count+10, 0, 255), CV_FILLED);//, CV_FILLED, hierarchy, 0, Point() );
-
-		rectangle(scratch, cvPoint(rect.x, rect.y), cvPoint(rect.x + rect.width, rect.y + rect.height),
-				CV_RGB(255, 0, 0), 1, 0, 0);
-
-		tobject.boundingBox = rect;
-		tobject.frame_id = tframe.id;
-		tobject.object_image = original(rect);
-
-		//m_edges.showImage(tobject.object_image);
-		//CVWindow::waitKey(-1);
-
-		tobject.number = i;
-
-		if (!m_object.saveObject(&tobject))
+		if (rect.width <= window && rect.height <= window && rect.x + window < image.cols && rect.y + window < image.rows)
 		{
-			//printf("failed to save object: %s\n", m_frame.getDatabase()->getErrorMessage());
-			exit(0);
+			tobject.area = rect.area();
+
+			rect.width = window;
+
+			rect.height = window;
+
+			// drawContours(boxImage, contours, i, CV_RGB(count+10, 0, 255), CV_FILLED);//, CV_FILLED, hierarchy, 0, Point() );
+
+			rectangle(scratch, cvPoint(rect.x, rect.y), cvPoint(rect.x + rect.width, rect.y + rect.height),
+					CV_RGB(255, 0, 0), 1, 0, 0);
+
+			tobject.boundingBox = rect;
+			tobject.frame_id = tframe.id;
+			tobject.object_image = original(rect);
+
+			//m_edges.showImage(tobject.object_image);
+			//CVWindow::waitKey(-1);
+
+			tobject.number = i;
+
+			if (!m_object.saveObject(&tobject))
+			{
+				//printf("failed to save object: %s\n", m_frame.getDatabase()->getErrorMessage());
+				exit(0);
+			}
 		}
 	}
 

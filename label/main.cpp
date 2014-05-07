@@ -38,7 +38,7 @@ void printUsage()
 	printf("  that are later used in classification.  The clustering data is saved to\n");
 	printf("  the database\n\n");
 
-	printf("Usage: ./clustering -v <video name in database> -d <path to database> -f <num frames>\n\n");
+	printf("Usage: ./label -v <video name in database> -db <path to database>\n\n");
 
 }
 

@@ -27,6 +27,8 @@ struct Params
 	std::string videoFile;
 	int threshold1;
 	int threshold2;
+	int window;
+
 	std::string database;
 	bool useDatabase;
 	bool showImages;
@@ -42,6 +44,7 @@ struct Params
 
 		showImages= false;
 		save = true;
+		window = 24;
 	}
 
 };
@@ -54,7 +57,7 @@ void printUsage()
 	printf("The objects are (optionally) stored in an sqlite database in the following hierarcy:\n");
 	printf("  Video->Frames->Objects\n\n");
 
-	printf("Usage: ./object_detection -v <path to video> -t1 <threshold1> -t2 <threshold2> -db <path to database> [-show <true|false>]\n\n");
+	printf("Usage: ./object_detection -v <path to video> -t1 <threshold1> -t2 <threshold2> -db <path to database> -w <window size> [-show <true|false>]\n\n");
 	//printf("  if no database is specified, the results will not be stored\n\n");
 }
 
@@ -107,6 +110,10 @@ bool parseParams(Params *params, int argc, char **argv)
 		{
 			if (strcmp(param, "false") == 0)
 				params->save = false;
+		}
+		else if (strcmp(p, "-w") == 0)
+		{
+			params->window = atoi(param);
 		}
 		else
 		{
@@ -223,12 +230,12 @@ int main(int argc, char **argv)
 
 		cvtColor(image, imageBW, CV_BGR2GRAY);
 
-		imageBlurred = blurImage->blurImage(imageBW);
-		imageBlurred = blurImage->blurImage(imageBlurred);
+		// imageBlurred = blurImage->blurImage(imageBW);
+		// imageBlurred = blurImage->blurImage(imageBlurred);
 
-		Mat temp;
+		// Mat temp;
 
-		absdiff(imageBW, imageBlurred, temp);
+		// absdiff(imageBW, imageBlurred, temp);
 
 		// temp = blurImage->blurImage(temp);
 
@@ -236,7 +243,7 @@ int main(int argc, char **argv)
 
 		//add(imageBlurred, temp, temp);
 
-		findContours->findContours(&tvideo, imageBlurred, image, numFrames);
+		findContours->findContours(&tvideo, imageBW, image, params.window, numFrames);
 
 		// findContours->findContours(&tvideo, temp, image, numFrames);
 		// findContours->findContours(&tvideo, imageBW, image, numFrames);

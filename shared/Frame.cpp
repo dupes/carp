@@ -143,7 +143,7 @@ bool Frame::findFrame(int videoID, int number, tFrame &frame)
 	bool success = true;
 
 	sqlite3_bind_int(m_findFrameByVideoIDAndNumber, 1, videoID);
-	sqlite3_bind_int(m_findFrameByVideoIDAndNumber, 2, number);
+	sqlite3_bind_int(m_findFrameByVideoIDAndNumber, 2, -1);//number);
 
 	if ((retval = sqlite3_step(m_findFrameByVideoIDAndNumber)) == SQLITE_DONE)
 	{
@@ -165,7 +165,7 @@ bool Frame::findFrame(int videoID, int number, tFrame &frame)
 bool Frame::findFrames(int videoID, int numFrames)
 {
 	sqlite3_bind_int(m_findFramesByVideoIDLimit, 1, videoID);
-	sqlite3_bind_int(m_findFramesByVideoIDLimit, 2, numFrames);
+	sqlite3_bind_int(m_findFramesByVideoIDLimit, 2, -1);//numFrames);
 
 	return true;
 }

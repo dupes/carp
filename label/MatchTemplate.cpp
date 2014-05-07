@@ -73,7 +73,7 @@ vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, map<int, tFrame*> frames
 
 				minMaxLoc(match, &minVal, &maxVal, &minLoc, &maxLoc);
 
-				printf("min: %f, max: %f\n", minVal, maxVal);
+				// printf("min: %f, max: %f\n", minVal, maxVal);
 
 				if(method  == CV_TM_SQDIFF || method == CV_TM_SQDIFF_NORMED)
 					matchLoc = minLoc;

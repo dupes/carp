@@ -27,6 +27,8 @@ struct tObject
 	Rect boundingBox;
 	int number;
 
+	double area;
+
 	string label;
 	bool verified;
 };

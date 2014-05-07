@@ -44,7 +44,7 @@ public:
 	// void findBoundingBoxes(IplImage *image, IplImage *original);
 	void findBoundingBoxes(Mat &image, Mat &original);
 
-	void findContours(tVideo *video, Mat &image, Mat &original, int frameNumber);
+	void findContours(tVideo *video, Mat &image, Mat &original, int window, int frameNumber);
 };
 
 #endif /* FINDCONTOURS_H_ */

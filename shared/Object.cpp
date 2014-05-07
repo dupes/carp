@@ -15,7 +15,7 @@ Object::Object(Database *db)
 
 	m_db = db;
 
-	sql = "insert into objects (frame_id, object_image, x, y, width, height, number) values (?, ?, ?, ?, ?, ?, ?)";
+	sql = "insert into objects (frame_id, object_image, x, y, width, height, area, number) values (?, ?, ?, ?, ?, ?, ?, ?)";
 	m_db->prepareStatement(&m_insertObject, sql);
 
 	sql = "select id, frame_id, object_image, contour, x, y, width, height, number, label, verified from objects where frame_id = ?";
@@ -60,7 +60,8 @@ bool Object::saveObject(tObject *object)
 	sqlite3_bind_int(m_insertObject, 4, object->boundingBox.y);
 	sqlite3_bind_int(m_insertObject, 5, object->boundingBox.width);
 	sqlite3_bind_int(m_insertObject, 6, object->boundingBox.height);
-	sqlite3_bind_int(m_insertObject, 7, object->number);
+	sqlite3_bind_double(m_insertObject, 7, object->area);
+	sqlite3_bind_int(m_insertObject, 8, object->number);
 
 	retval = sqlite3_step(m_insertObject);
 
