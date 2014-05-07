@@ -28,7 +28,7 @@ Mat FindEdgesCanny::findEdges(Mat &image)
 	// cvCanny(usePyramid(image), m_edges, m_threshold1, m_threshold2, m_apertureSize);
 	// cvCanny(image, m_edges, m_threshold1, m_threshold2, m_apertureSize);
 
-	cv::Canny(image, m_edges, m_threshold1, m_threshold2, 3, false);
+	cv::Canny(image, m_edges, m_threshold1, m_threshold2, 3, true);
 
 	// cv::Canny()
 	return m_edges;
