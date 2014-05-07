@@ -3,5 +3,6 @@ debug
 release
 .metadata
 videos
-database
+database/*.sqlite
 RemoteSystemTempFiles
+.sconsign.dblite
