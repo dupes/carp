@@ -244,7 +244,7 @@ void MainWindow::findMatching()
 	if (matches != NULL)
 		delete (matches);
 
-	matches = MatchTemplate::matchTemplate(m_object->object_image, m_video.frames(), CV_TM_CCOEFF_NORMED, 1, m_video.frames().size(), 1, m_templateThresholdValue);
+	matches = MatchTemplate::matchTemplate(m_object->object_image, m_object->area, m_video.frames(), CV_TM_CCOEFF_NORMED, 1, m_video.frames().size(), 1, m_templateThresholdValue);
 	MatchTemplate::displayMatches(matches);
 //	CVWindow::waitKey(-1);
 

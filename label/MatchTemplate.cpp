@@ -29,7 +29,7 @@ MatchTemplate::~MatchTemplate()
 
 /*********************************************************************/
 
-vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step, int threshold)
+vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, double area, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step, int threshold)
 {
 	map<int, tFrame*>::iterator itr;
 	Mat match;
@@ -51,11 +51,16 @@ vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, map<int, tFrame*> frames
 		{
 			// Mat *inputImage = &(*itr).second->original_image;
 			// Mat *inputImage = &frames[index]->original_image;
-			Mat *inputImage = &(*itr).second->object_image;
 
-			if (inputImage->rows <= templ.rows * 1.2 && inputImage->rows >= templ.rows &&
-					inputImage->cols <= templ.cols * 1.2 && inputImage->cols >= templ.cols)
+
+			// if (inputImage->rows <= templ.rows * 1.2 && inputImage->rows >= templ.rows &&
+			//		inputImage->cols <= templ.cols * 1.2 && inputImage->cols >= templ.cols)
+			if ((*itr).second->area >= area)
 			{
+				printf("areas: %f, %f\n", (*itr).second->area, area);
+
+				Mat *inputImage = &(*itr).second->object_image;
+
 				match.create(inputImage->cols, inputImage->rows, CV_32FC1);//inputImage->type());
 
 				cv::matchTemplate(*inputImage, templ, match, method);
@@ -120,7 +125,7 @@ vector<tMatch> *MatchTemplate::matchTemplate(vector<tMatch> *matches, map<int, t
 		Mat templ = match->object->object_image(match->location);
 		// Mat templ = match->object->object_image;
 
-		newMatches = matchTemplate(templ, frames, method, startingFrame, numFrames, step, threshold);
+		newMatches = matchTemplate(templ, match->object->area, frames, method, startingFrame, numFrames, step, threshold);
 
 		//displayMatches(newMatches);
 		// CVWindow::waitKey(-1);

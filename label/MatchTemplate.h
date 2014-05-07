@@ -49,7 +49,7 @@ public:
 	MatchTemplate();
 	virtual ~MatchTemplate();
 
-	static vector<tMatch> *matchTemplate(Mat templ, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step, int threshold = 200000);
+	static vector<tMatch> *matchTemplate(Mat templ, double area, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step, int threshold = 200000);
 	static vector<tMatch> *matchTemplate(vector<tMatch> *matches, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step, int threshold = 30000);
 
 	static void displayMatches(vector<tMatch> *matches);

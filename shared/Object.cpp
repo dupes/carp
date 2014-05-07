@@ -18,7 +18,7 @@ Object::Object(Database *db)
 	sql = "insert into objects (frame_id, object_image, x, y, width, height, area, number) values (?, ?, ?, ?, ?, ?, ?, ?)";
 	m_db->prepareStatement(&m_insertObject, sql);
 
-	sql = "select id, frame_id, object_image, contour, x, y, width, height, number, label, verified from objects where frame_id = ?";
+	sql = "select id, frame_id, object_image, contour, x, y, width, height, area, number, label, verified from objects where frame_id = ?";
 	m_db->prepareStatement(&m_findObjectsByFrameID, sql);
 
 	sql = "select c.id, c.frame_id, c.object_image, c.contour, c.x, c.y, c.width, c.height, c.number, c.label, c.verified from ";
@@ -160,9 +160,11 @@ bool Object::parseObject(tObject &object)
 		sqlite3_column_int(m_currentSelect, 7)  // height
 	);
 
-	object.number = sqlite3_column_int(m_currentSelect, 8);
+	object.area = sqlite3_column_double(m_currentSelect, 8);
 
-	if (sqlite3_column_text(m_currentSelect, 9) != NULL)
+	object.number = sqlite3_column_int(m_currentSelect, 9);
+
+	if (sqlite3_column_text(m_currentSelect, 10) != NULL)
 		object.label = (char *)sqlite3_column_text(m_currentSelect, 9);
 
 	object.verified = (sqlite3_column_int(m_currentSelect, 10) == 0 ? false : true);
