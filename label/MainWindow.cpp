@@ -239,7 +239,49 @@ void MainWindow::findHomography()
 	Point2f src[4];
 	Point2f dest[4];
 
+	double minx = INT_MAX, maxx = 0, miny = INT_MAX, maxy = 0;
+
+	for (int index = 0; index < 4; index++)
+	{
+		src[index] = Point(m_homographyPoints[index]->boundingBox.x, m_homographyPoints[index]->boundingBox.y);
+
+		if (m_homographyPoints[index]->boundingBox.x > maxx)
+			maxx = m_homographyPoints[index]->boundingBox.x;
+
+		if (m_homographyPoints[index]->boundingBox.x < minx)
+			minx = m_homographyPoints[index]->boundingBox.x;
+
+		if (m_homographyPoints[index]->boundingBox.y > maxy)
+			maxy = m_homographyPoints[index]->boundingBox.y;
+
+		if (m_homographyPoints[index]->boundingBox.y < minx)
+			miny = m_homographyPoints[index]->boundingBox.y;
+	}
+
+	dest[0] = Point(minx, miny);
+
+	dest[1] = Point(maxx, miny);
+
+	dest[2] = Point(minx, maxy);
+
+	dest[3] = Point(maxx, maxy);
+
+	Mat h = getPerspectiveTransform(src, dest);
+
+	Mat destImage;
+
+	// destImage.create(m_tframe->original_image.cols, m_tframe->original_image.rows, CV_32FC1);
+
+	m_tframe->original_image.copyTo(destImage);
+
+	// perspectiveTransform(m_tframe->original_image, destImage, h);
+
+	warpPerspective(m_tframe->original_image, destImage, h, destImage.size());
+
 	m_homographyPoints.clear();
+
+	m_main.showImage(destImage);
+
 }
 
 /*********************************************************************/
