@@ -39,7 +39,7 @@ private:
 
 	int m_trackBarValue;
 
-	int m_templateThresholdValue;
+	double m_templateThresholdValue;
 
 	string getUserInput(string prompt);
 
@@ -52,6 +52,8 @@ private:
 	void findMatching();
 	void saveLabels();
 	void setLabelFilter();
+
+	void getThreshold();
 
 	void displayFrame();
 

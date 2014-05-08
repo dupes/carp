@@ -21,8 +21,7 @@ MainWindow::MainWindow()
 
 	m_object = NULL;
 
-	// m_templateThresholdValue = 200000;
-	m_templateThresholdValue = 10;
+	m_templateThresholdValue = 0.95;
 
 	matches = NULL;
 	allMatches = NULL;
@@ -137,7 +136,7 @@ string MainWindow::getUserInput(string prompt)
 
 		Mat image = m_tframe->original_image.clone();
 
-		putText(image, output.c_str(), cvPoint(10,30), FONT_HERSHEY_PLAIN, 2, CV_RGB(255, 0, 0), 2, CV_AA);
+		putText(image, output.c_str(), cvPoint(10,30), FONT_HERSHEY_PLAIN, 2, CV_RGB(255, 255, 255), 2, CV_AA);
 
 		m_main.showImage(image);
 
@@ -296,12 +295,10 @@ void MainWindow::findMatching()
 		return;
 	}
 
-	putText(image, "Searching.  pleas wait...", cvPoint(10,30), FONT_HERSHEY_PLAIN, 2, CV_RGB(255, 0, 0), 2, CV_AA);
+	putText(image, "Searching.  please wait...", cvPoint(10,30), FONT_HERSHEY_PLAIN, 2, CV_RGB(255, 0, 0), 2, CV_AA);
 	m_main.showImage(image);
 
 	CVWindow::waitKey(5);
-
-	printf("threshold: %d\n", m_templateThresholdValue);
 
 	// Mat templ, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step
 	// CV_TM_SQDIFF_NORMED, CV_TM_SQDIFF
@@ -339,6 +336,20 @@ void MainWindow::saveLabels()
 	MatchTemplate::saveMatches(label, matches);
 
 	printf("labels saved\n");
+}
+
+/*********************************************************************/
+
+void MainWindow::getThreshold()
+{
+	string value;
+
+	if ((value = getUserInput("enter threshold (0 - 1): ")) == "\r")
+		return;
+
+	m_templateThresholdValue = atof(value.c_str());
+
+	printf("new threshold: %f\n", m_templateThresholdValue);
 }
 
 /*********************************************************************/
@@ -387,7 +398,6 @@ void MainWindow::loop(string videoName, int numFrames)
 	printf("loaded frames: %d\n", numFramesLoaded);
 
 	cvCreateTrackbar2("frames", "main", &m_trackBarValue, numFramesLoaded, trackBarCallback, this);
-	cvCreateTrackbar2("threshold", "main", &m_templateThresholdValue, 10000000, thresholdTrackBarCallback, this);
 
 	cvSetMouseCallback("main", mouseButtonClickCallback, this);
 
@@ -428,6 +438,9 @@ void MainWindow::loop(string videoName, int numFrames)
 				saveLabels();
 				break;
 
+			case 't':
+				getThreshold();
+				break;
 			/*case 'f':
 				setLabelFilter();
 				break;

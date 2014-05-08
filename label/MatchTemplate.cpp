@@ -29,7 +29,7 @@ MatchTemplate::~MatchTemplate()
 
 /*********************************************************************/
 
-vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, double area, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step, int threshold)
+vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, double area, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step, double threshold)
 {
 	map<int, tFrame*>::iterator itr;
 	Mat match;
@@ -42,6 +42,8 @@ vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, double area, map<int, tF
 	cols = frames[1]->original_image.cols;
 	type = frames[1]->original_image.type();
 
+	printf("threshold: %f\n", threshold);
+
 	for (int index = startingFrame; index < startingFrame + (numFrames*step); index+= step)
 	{
 		if (index > (int)frames.size())
@@ -53,11 +55,13 @@ vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, double area, map<int, tF
 			// Mat *inputImage = &frames[index]->original_image;
 
 
-			// if (inputImage->rows <= templ.rows * 1.2 && inputImage->rows >= templ.rows &&
-			//		inputImage->cols <= templ.cols * 1.2 && inputImage->cols >= templ.cols)
+
+			 // if (inputImage->rows <= templ.rows * 1.2 && inputImage->rows >= templ.rows &&
+				//	inputImage->cols <= templ.cols * 1.2 && inputImage->cols >= templ.cols)
 			if ((*itr).second->area >= area)
 			{
-				printf("areas: %f, %f\n", (*itr).second->area, area);
+				// printf("areas: %f, %f\n", (*itr).second->area, area);
+
 
 				Mat *inputImage = &(*itr).second->object_image;
 
@@ -80,12 +84,14 @@ vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, double area, map<int, tF
 
 				// printf("min: %f, max: %f\n", minVal, maxVal);
 
-				if(method  == CV_TM_SQDIFF || method == CV_TM_SQDIFF_NORMED)
-					matchLoc = minLoc;
-				else
+				//if(method  == CV_TM_SQDIFF || method == CV_TM_SQDIFF_NORMED)
+				//	matchLoc = minLoc;
+				//else
 					matchLoc = maxLoc;
 
-				if (maxVal > 0.8)
+
+
+				if (maxVal > threshold)
 				{
 					tMatch match;
 
@@ -110,7 +116,7 @@ vector<tMatch> *MatchTemplate::matchTemplate(Mat templ, double area, map<int, tF
 
 /*********************************************************************/
 
-vector<tMatch> *MatchTemplate::matchTemplate(vector<tMatch> *matches, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step, int threshold)
+vector<tMatch> *MatchTemplate::matchTemplate(vector<tMatch> *matches, map<int, tFrame*> frames, int method, int startingFrame, int numFrames, int step, double threshold)
 {
 	vector<tMatch> *newMatches;
 	vector<tMatch> *allMatches = new vector<tMatch>();
