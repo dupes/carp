@@ -79,9 +79,9 @@ void FindContours::findContours(tVideo *video, Mat &image, Mat &original, int wi
 		{
 			tobject.area = rect.area();
 
-			rect.width = window;
+			// rect.width = window;
 
-			rect.height = window;
+			// rect.height = window;
 
 			// drawContours(boxImage, contours, i, CV_RGB(count+10, 0, 255), CV_FILLED);//, CV_FILLED, hierarchy, 0, Point() );
 
@@ -90,10 +90,15 @@ void FindContours::findContours(tVideo *video, Mat &image, Mat &original, int wi
 
 			tobject.boundingBox = rect;
 			tobject.frame_id = tframe.id;
-			tobject.object_image = original(rect);
+			// tobject.object_image = original(rect);
 
-			//m_edges.showImage(tobject.object_image);
-			//CVWindow::waitKey(-1);
+			tobject.object_image = Mat::zeros(window, window, original.type());
+			// original(rect).copyTo(tobject.object_image);
+
+			original(rect).copyTo(tobject.object_image(Rect(0,0,rect.width, rect.height)));
+
+			// m_edges.showImage(tobject.object_image);
+			// CVWindow::waitKey(-1);
 
 			tobject.number = i;
 
