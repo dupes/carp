@@ -54,3 +54,6 @@ SConscript(project + '/sconscript', exports=['project'])
 
 project = 'homography'
 SConscript(project + '/sconscript', exports=['project'])
+
+project = 'cluster'
+SConscript(project + '/sconscript', exports=['project'])
