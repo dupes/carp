@@ -6,7 +6,25 @@
  */
 
 #include "MainWindow.h"
-#include "shared/Shared.h"
+
+#include <opencv2/core/core.hpp>
+#include <opencv2/core/core_c.h>
+#include <opencv2/core/types_c.h>
+#include <opencv2/highgui/highgui_c.h>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc/types_c.h>
+#include <X11/keysymdef.h>
+#include <climits>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
+#include <utility>
+
+#include "../classify/shared/Database.h"
+#include "../classify/shared/Frame.h"
+#include "../classify/shared/Object.h"
+#include "../classify/shared/Shared.h"
+//#include "shared/Shared.h"
 
 MainWindow::MainWindow()
 	: m_video(&Shared::database)
@@ -281,6 +299,9 @@ void MainWindow::findHomography()
 
 	m_main.showImage(destImage);
 
+	FileStorage fs("../../homography/homography.xml", FileStorage::WRITE);
+
+	fs << "homography" << h;
 }
 
 /*********************************************************************/

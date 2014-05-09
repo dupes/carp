@@ -51,3 +51,6 @@ SConscript(project + '/sconscript', exports=['project'])
 
 project = 'test_classifier'
 SConscript(project + '/sconscript', exports=['project'])
+
+project = 'homography'
+SConscript(project + '/sconscript', exports=['project'])

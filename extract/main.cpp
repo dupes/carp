@@ -34,6 +34,8 @@ struct Params
 	bool showImages;
 	bool save;
 
+	Mat h;
+
 	Params()
 	{
 		videoFile = "";
@@ -57,7 +59,7 @@ void printUsage()
 	printf("The objects are (optionally) stored in an sqlite database in the following hierarcy:\n");
 	printf("  Video->Frames->Objects\n\n");
 
-	printf("Usage: ./object_detection -v <path to video> -t1 <threshold1> -t2 <threshold2> -db <path to database> -w <window size> [-show <true|false>]\n\n");
+	printf("Usage: ./object_detection -v <path to video> -t1 <threshold1> -t2 <threshold2> -db <path to database> -w <window size> -h <homogrpahy xml matrix file> [-show <true|false>]\n\n");
 	//printf("  if no database is specified, the results will not be stored\n\n");
 }
 
@@ -114,6 +116,13 @@ bool parseParams(Params *params, int argc, char **argv)
 		else if (strcmp(p, "-w") == 0)
 		{
 			params->window = atoi(param);
+		}
+		else if (strcmp(p, "-h") == 0)
+		{
+			FileStorage fs(param, FileStorage::READ);
+			string name;
+
+			fs["homography"] >> params->h;
 		}
 		else
 		{
@@ -217,6 +226,10 @@ int main(int argc, char **argv)
 	int wait = -1;
 	int key = 0;
 
+	time_t start, end;
+
+	time(&start);
+
 	while (1)
 	{
 		image = capture.queryFrame();
@@ -224,11 +237,15 @@ int main(int argc, char **argv)
 		if (image.cols == 0)
 			break;
 
+		// image.copyTo(destImage);
+		warpPerspective(image, image, params.h, image.size());
+
 		numFrames++;
 
 		// printf("%ld\n", numFrames);
 
 		cvtColor(image, imageBW, CV_BGR2GRAY);
+		// cvtColor(destImage, imageBW, CV_BGR2GRAY);
 
 		// imageBlurred = blurImage->blurImage(imageBW);
 		// imageBlurred = blurImage->blurImage(imageBlurred);
@@ -275,6 +292,10 @@ int main(int argc, char **argv)
 				wait = -1;
 		}
 	}
+
+	time(&end);
+
+	printf("time: %d\n", end - start);
 
 	Shared::database.commitTransaction();
 
