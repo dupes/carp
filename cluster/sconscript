@@ -23,7 +23,7 @@ localenv.VariantDir(builddir, ".", duplicate=0)
 srclst = map(lambda x: builddir + '/' + x, glob.glob('*.cpp'))
 
 #srclst += map(lambda x: builddir + '/' + x, glob.glob('FindEdges/*.cpp'))
-#srclst += map(lambda x: builddir + '/' + x, glob.glob('BlurImage/*.cpp'))
+srclst += map(lambda x: builddir + '/' + x, glob.glob('Cluster/*.cpp'))
 
 # shared files
 srclst += map(lambda x: builddir + '/' + x, glob.glob('shared/*.cpp'))

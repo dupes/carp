@@ -102,7 +102,6 @@ int main(int argc, char **argv)
 
 	printf("loaded objects: %ld\n", objects.size());
 
-
 	printf("program complete\n");
 
 	delete (object);
