@@ -21,6 +21,9 @@ Object::Object(Database *db)
 	sql = "select id, frame_id, object_image, contour, x, y, width, height, area, number, label, verified from objects where frame_id = ?";
 	m_db->prepareStatement(&m_findObjectsByFrameID, sql);
 
+	sql = "select id, frame_id, object_image, contour, x, y, width, height, area, number, label, verified from objects where label = ?";
+	m_db->prepareStatement(&m_findObjectsByLabel, sql);
+
 	sql = "select c.id, c.frame_id, c.object_image, c.contour, c.x, c.y, c.width, c.height, c.number, c.label, c.verified from ";
 	sql += "videos a inner join frames b on a.id = b.video_id inner join objects c on b.id = c.frame_id where label is not null and label <> '' and verified == 1";
 	// sql += " and height = 22 and width = 21 ";
@@ -123,12 +126,27 @@ bool Object::findObjects(int frameID)
 
 /*********************************************************************/
 
+bool Object::findByLabel(string label)
+{
+
+	sqlite3_reset(m_findObjectsByLabel);
+	sqlite3_clear_bindings(m_findObjectsByLabel);
+
+	sqlite3_bind_text(m_findObjectsByLabel, 1, label.c_str(), -1, SQLITE_STATIC);
+
+	m_currentSelect = m_findObjectsByLabel;
+
+	return true;
+}
+
+/*********************************************************************/
+
 bool Object::findObjectsByVideoID(int videoID)
 {
 	sqlite3_reset(m_findObjectsByVideoID);
 	sqlite3_clear_bindings(m_findObjectsByVideoID);
 
-	// sqlite3_bind_int(m_findObjectsByVideoID, 1, videoID);
+	sqlite3_bind_int(m_findObjectsByVideoID, 1, videoID);
 
 	m_currentSelect = m_findObjectsByVideoID;
 

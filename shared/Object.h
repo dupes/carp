@@ -40,6 +40,7 @@ private:
 
 	sqlite3_stmt *m_findObjectsByFrameID;
 	sqlite3_stmt *m_findObjectsByVideoID;
+	sqlite3_stmt *m_findObjectsByLabel;
 
 	sqlite3_stmt *m_updateObject;
 
@@ -57,6 +58,8 @@ public:
 	bool updateObject(tObject *object);
 
 	bool findObjects(int frameID);
+
+	bool findByLabel(string label);
 
 	bool findObjectsByVideoID(int videoID);
 
