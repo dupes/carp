@@ -7,6 +7,8 @@
 
 #include "FindCenterMean.h"
 
+#include "../shared/CVWindow.h"
+
 FindCenterMean::FindCenterMean()
 {
 }
@@ -31,24 +33,45 @@ Mat FindCenterMean::findCenter(list<tObject*> objects, Distance *distance, int c
 
 	int count = 0;
 
+
 	for (itr = objects.begin(); itr != objects.end(); itr++)
 	{
 		if ((*itr)->clusterID != clusterID)
 			continue;
+
+		//printf("found cluster: \n");
+
+		//win.showImage((*itr)->object_image);
+		//win.waitKey(-1);
 
 		add(center, (*itr)->object_image, center, noArray(), CV_64FC3);
 
 		count++;
 	}
 
-	Mat result;
+	printf("objects in cluster: %d\n", count);
+
+	// CVWindow win;
+
+	// win.createWindow("center", 0);
+	//win.showImage(center);
+	//win.waitKey(-1);
+
+	//Mat result;
 
 	itr = objects.begin();
 
 	// the resulting center matrix should be the same type as the incoming image
-	result = Mat((*itr)->object_image.cols, (*itr)->object_image.rows, (*itr)->object_image.type(), 0.0);
+	//result = Mat((*itr)->object_image.cols, (*itr)->object_image.rows, (*itr)->object_image.type(), 0.0);
 
-	divide(count, center, result, (*itr)->object_image.type());
+	divide(center, count, center);
 
-	return result;
+	center.convertTo(center, (*itr)->object_image.depth());
+
+	// normalize(center,center,0,1,CV_MINMAX);
+
+	//win.showImage(center);
+	// win.waitKey(-1);
+
+	return center;
 }
