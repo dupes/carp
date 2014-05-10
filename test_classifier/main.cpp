@@ -32,6 +32,8 @@ struct Params
 	bool train;
 	bool test;
 
+	Mat homography;
+
 	Params()
 	{
 		recognizerFile = "recognizer.xml";
@@ -53,7 +55,7 @@ void printUsage()
 	printf("  that are later used in classification.  The clustering data is saved to\n");
 	printf("  the database\n\n");
 
-	printf("Usage: ./test_classifier -v <video name in database> -f <recognizer file> \n\n");
+	printf("Usage: ./test_classifier -v <video name in database> -f <recognizer file> -h <homography file> \n\n");
 
 }
 
@@ -97,6 +99,13 @@ bool parseParams(Params *params, int argc, char **argv)
 		{
 			if (strcmp(param, "true") == 0)
 				params->train = true;
+		}
+		else if (strcmp(p, "-h") == 0)
+		{
+			FileStorage fs(param, FileStorage::READ);
+			string name;
+
+			fs["homography"] >> params->homography;
 		}
 		else
 		{
@@ -175,6 +184,8 @@ int main(int argc, char **argv)
 		s << "fps: " << fps;
 
 		printf("%s\n", s.str().c_str());
+
+		warpPerspective(image, image, params.homography, image.size());
 
 		cvtColor(image, imageBW, CV_BGR2GRAY);
 
