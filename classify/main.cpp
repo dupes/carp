@@ -52,7 +52,7 @@ void printUsage()
 	printf("  that are later used in classification.  The clustering data is saved to\n");
 	printf("  the database\n\n");
 
-	printf("Usage: ./classify -v <video name in database> -d <path to database> -f <recognizer file> --train <true or false>\n\n");
+	printf("Usage: ./classify -v <video name in database> -db <path to database> -f <recognizer file> --train <true or false>\n\n");
 
 }
 
@@ -265,8 +265,8 @@ void loadObjects(map<int, tObject*> &objects, vector<Mat> &images, vector<int> &
 {
 	map<string, int> labelNames;
 
-	labelNames["pacman"] = 0;
-	labelNames["ghost"] = 1;
+	// labelNames["pacman"] = 0;
+	// labelNames["ghost"] = 1;
 
 	/*
 	labelNames["pink ghost"] = 1;
@@ -276,8 +276,8 @@ void loadObjects(map<int, tObject*> &objects, vector<Mat> &images, vector<int> &
 	labelNames["edible ghost"] = 1;
 	 */
 
-	int maxRows = 50;
-	int maxCols = 50;
+	//int maxRows = 50;
+	//int maxCols = 50;
 
 	/*for (map<int, tObject*>::iterator itr = objects.begin(); itr != objects.end(); itr++)
 	{
@@ -297,19 +297,22 @@ void loadObjects(map<int, tObject*> &objects, vector<Mat> &images, vector<int> &
 	{
 		tObject *object = (*itr).second;
 
-		if (!(object->object_image.rows <= maxRows && object->object_image.cols <= maxCols))
+		// if (!(object->object_image.rows <= maxRows && object->object_image.cols <= maxCols))
+		if (object->label == "")
 			continue;
 
-		Mat image = Mat::zeros(maxRows, maxCols, object->object_image.type()); //= (*itr)->object_image.clone();// (Rect(1, 2, 3, 4));
+		//Mat image = Mat::zeros(maxRows, maxCols, object->object_image.type()); //= (*itr)->object_image.clone();// (Rect(1, 2, 3, 4));
 
 		// printf("dim: %d, %d, image: %d, %d\n", (*itr)->object_image.cols, (*itr)->object_image.rows, image.cols, image.rows);
 
-		int x = (maxCols - object->object_image.cols) / 2;
-		int y = (maxRows - object->object_image.rows) / 2;
+		//int x = (maxCols - object->object_image.cols) / 2;
+		//int y = (maxRows - object->object_image.rows) / 2;
 
-		Mat dest = image(Rect(x, y, object->object_image.cols, object->object_image.rows));
+		//Mat dest = image(Rect(x, y, object->object_image.cols, object->object_image.rows));
 
-		object->object_image.copyTo(dest);
+		Mat image;
+
+		object->object_image.copyTo(image);
 
 		cvtColor(image, image, CV_BGR2GRAY);
 
@@ -321,7 +324,18 @@ void loadObjects(map<int, tObject*> &objects, vector<Mat> &images, vector<int> &
 		{
 			images.push_back(image);
 
-			labels.push_back(labelNames[object->label]);
+			stringstream label;
+
+			label << object->label << object->clusterID;
+
+			if (labelNames.find(label.str()) == labelNames.end())
+			{
+				labelNames[label.str()] = labelNames.size();
+			}
+
+			int id = labelNames[label.str()];
+
+			labels.push_back(id);
 		}
 		else
 		{
