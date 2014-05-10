@@ -117,10 +117,16 @@ int main(int argc, char **argv)
 
 	printf("loaded objects: %ld\n", objects.size());
 
-	// static void findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &reCenter);
 	FindClusters::findClusters(objects, 0.0, distance, findCenter);
 
-	//printf("program complete\n");
+	Shared::database.beginTransaction();
+
+	for (list<tObject*>::iterator itr = objects.begin(); itr != objects.end(); itr++)
+	{
+		object->updateObject((*itr));
+	}
+
+	Shared::database.commitTransaction();
 
 	delete (object);
 
