@@ -7,6 +7,8 @@
 
 #include "DistanceMatchTemplate.h"
 
+#include "../shared/CVWindow.h"
+
 DistanceMatchTemplate::DistanceMatchTemplate()
 {
 }
@@ -28,6 +30,14 @@ double DistanceMatchTemplate::distance(Mat *center, tObject *object)
 	Point maxLoc;
 
 	Point matchLoc;
+
+	// CVWindow win;
+	// win.showImage(*center);
+
+	// win.waitKey(-1);
+
+	// win.showImage(object->object_image);
+	// win.waitKey(-1);
 
 	if (m_match.size() != object->object_image.size())
 		m_match.create(object->object_image.cols, object->object_image.rows, CV_32FC1);
