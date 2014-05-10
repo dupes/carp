@@ -37,7 +37,7 @@ void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistan
 		count++;
 	}
 
-	centers = findCenter.findCenter(objects, &distance, 2);
+	centers = findCenter.findCenters(objects, &distance, 2);
 
 	bool modified = false;
 

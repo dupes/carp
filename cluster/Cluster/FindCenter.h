@@ -21,11 +21,14 @@ class FindCenter
 {
 private:
 
+private:
+	virtual Mat findCenter(list<tObject*> objects, Distance *distance, int clusterID) = 0;
+
 public:
 	FindCenter();
 	virtual ~FindCenter();
 
-	virtual vector<Mat> findCenter(list<tObject*> objects, Distance *distance, int numClusters) = 0;
+	virtual vector<Mat> findCenters(list<tObject*> objects, Distance *distance, int numClusters) = 0;
 };
 
 #endif /* RECENTER_H_ */

@@ -14,13 +14,11 @@ class ReCenterMedoid : public FindCenter
 {
 private:
 
-	Mat doReCenter(list<tObject*> objects, Distance *distance, int clusterID);
+	virtual Mat doReCenter(list<tObject*> objects, Distance *distance, int clusterID);
 
 public:
 	ReCenterMedoid();
 	virtual ~ReCenterMedoid();
-
-	virtual vector<Mat> findCenter(list<tObject*> objects, Distance *distance, int numClusters);
 };
 
 #endif /* RECENTERMEDOID_H_ */

@@ -23,12 +23,3 @@ Mat ReCenterMedoid::doReCenter(list<tObject*> objects, Distance *distance, int c
 
 	return mat;
 }
-
-/*********************************************************************/
-
-vector<Mat> ReCenterMedoid::findCenter(list<tObject*> objects, Distance *distance, int numClusters)
-{
-	vector<Mat> mat;
-
-	return mat;
-}

@@ -15,3 +15,14 @@ FindCenter::~FindCenter()
 {
 }
 
+/*********************************************************************/
+
+vector<Mat> FindCenter::findCenters(list<tObject*> objects, Distance *distance, int numClusters)
+{
+	vector<Mat> centers;
+
+	for (int clusterID = 0; clusterID < numClusters; clusterID++)
+		centers.push_back(findCenter(objects, distance, clusterID));
+
+	return centers;
+}
