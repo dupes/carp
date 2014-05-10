@@ -11,7 +11,7 @@
 #include <opencv/cv.h>
 
 #include "shared/CVWindow.h"
-#include "FindEdges/FindEdges.h"
+#include "shared/FindEdges/FindEdges.h"
 
 #include "shared/Frame.h"
 #include "shared/Video.h"

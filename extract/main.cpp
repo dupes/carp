@@ -8,12 +8,12 @@
 
 #include "FindContours.h"
 
-#include "FindEdges/FindEdgesCanny.h"
-#include "FindEdges/FindEdgesThreshold.h"
-#include "FindEdges/FindEdgesSobel.h"
+#include "shared/FindEdges/FindEdgesCanny.h"
+#include "shared/FindEdges/FindEdgesThreshold.h"
+#include "shared/FindEdges/FindEdgesSobel.h"
 
-#include "BlurImage/BlurImagePyramids.h"
-#include "BlurImage/BlurImageGaussian.h"
+#include "shared/BlurImage/BlurImagePyramids.h"
+#include "shared/BlurImage/BlurImageGaussian.h"
 
 #include "shared/Shared.h"
 
