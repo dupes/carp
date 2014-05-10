@@ -28,7 +28,7 @@ public:
 	FindCenter();
 	virtual ~FindCenter();
 
-	virtual vector<Mat> findCenters(list<tObject*> objects, Distance *distance, int numClusters) = 0;
+	vector<Mat> findCenters(list<tObject*> objects, Distance *distance, int numClusters);
 };
 
 #endif /* RECENTER_H_ */

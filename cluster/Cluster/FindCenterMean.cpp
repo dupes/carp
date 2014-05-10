@@ -19,14 +19,15 @@ FindCenterMean::~FindCenterMean()
 
 /*********************************************************************/
 
-Mat FindCenterMean::doReCenter(list<tObject*> objects, Distance *distance, int clusterID)
+Mat FindCenterMean::findCenter(list<tObject*> objects, Distance *distance, int clusterID)
 {
 	Mat center;
-	list<tObject*>::iterator itr;
+	list<tObject*>::iterator itr, first;
 
 	itr = objects.begin();
 
-	center = Mat((*itr)->object_image.cols, (*itr)->object_image.rows, CV_32FC1, 0.0);
+	// create float matrix to avoid overflow
+	center = Mat((*itr)->object_image.cols, (*itr)->object_image.rows, CV_64FC3, 0.0);
 
 	int count = 0;
 
@@ -35,12 +36,19 @@ Mat FindCenterMean::doReCenter(list<tObject*> objects, Distance *distance, int c
 		if ((*itr)->clusterID != clusterID)
 			continue;
 
-		add(center, (*itr)->object_image, center);
+		add(center, (*itr)->object_image, center, noArray(), CV_64FC3);
 
 		count++;
 	}
 
-	divide(count, center, center);
+	Mat result;
 
-	return center;
+	itr = objects.begin();
+
+	// the resulting center matrix should be the same type as the incoming image
+	result = Mat((*itr)->object_image.cols, (*itr)->object_image.rows, (*itr)->object_image.type(), 0.0);
+
+	divide(count, center, result, (*itr)->object_image.type());
+
+	return result;
 }

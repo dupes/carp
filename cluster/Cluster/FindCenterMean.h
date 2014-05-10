@@ -14,7 +14,7 @@ class FindCenterMean : public FindCenter
 {
 private:
 
-	virtual Mat doReCenter(list<tObject*> objects, Distance *distance, int clusterID);
+	virtual Mat findCenter(list<tObject*> objects, Distance *distance, int clusterID);
 
 public:
 	FindCenterMean();

@@ -10,6 +10,11 @@
 
 #include "shared/Video.h"
 
+#include "Cluster/FindClusters.h"
+
+#include "Cluster/FindCenterMean.h"
+#include "Cluster/DistanceMatchTemplate.h"
+
 /*********************************************************************/
 
 struct Params
@@ -17,8 +22,14 @@ struct Params
 	std::string label;
 	std::string database;
 
+	Distance *distance;
+	FindCenter *findCenter;
+
 	Params()
 	{
+		distance = NULL;
+		findCenter = NULL;
+
 		label ="";
 		database = "";
 	}
@@ -30,8 +41,7 @@ void printUsage()
 {
 	printf("This program creates clusters from labeled objects in the database\n");
 
-	printf("Usage: ./cluster -db <path to database> -l <object label>\n\n");
-
+	printf("Usage: ./cluster -db <path to database> -l <object label> -d <distance function> -c <center function> \n\n");
 }
 
 /*********************************************************************/
@@ -81,7 +91,11 @@ int main(int argc, char **argv)
 	Object *object;
 	tObject *tobject;
 
-	map<int, tObject*> objects;
+	DistanceMatchTemplate distance;
+	FindCenterMean findCenter;
+
+	// map<int, tObject*> objects;
+	list<tObject*> objects;
 
 	if (!parseParams(&params, argc, argv))
 	{
@@ -98,11 +112,15 @@ int main(int argc, char **argv)
 	}
 
 	while ((tobject = object->nextObject()) != NULL)
-		objects[tobject->id] = tobject;
+		// objects[tobject->id] = tobject;
+		objects.push_back(tobject);
 
 	printf("loaded objects: %ld\n", objects.size());
 
-	printf("program complete\n");
+	// static void findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &reCenter);
+	FindClusters::findClusters(objects, 0.0, distance, findCenter);
+
+	//printf("program complete\n");
 
 	delete (object);
 
