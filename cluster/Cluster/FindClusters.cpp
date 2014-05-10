@@ -6,10 +6,12 @@
  */
 
 #include <limits.h>
+#include <cstdlib>
 
 #include "FindClusters.h"
 
 #include "../shared/CVWindow.h"
+
 
 FindClusters::FindClusters()
 {
@@ -25,7 +27,7 @@ FindClusters::~FindClusters()
 
 void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &findCenter)
 {
-	size_t numClusters = 2;
+	size_t numClusters = 10;
 	CVWindow win;
 
 	vector<Mat> centers;
@@ -93,7 +95,7 @@ void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistan
 			break;
 
 		modified = false;
-		centers = findCenter.findCenters(objects, &distance, 2);
+		centers = findCenter.findCenters(objects, &distance, numClusters);
 	}
 
 	for (size_t clusterID = 0; clusterID < numClusters; clusterID++)
