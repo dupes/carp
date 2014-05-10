@@ -28,7 +28,7 @@ public:
 	FindClusters();
 	virtual ~FindClusters();
 
-	static void findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &reCenter);
+	static void findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &reCenter, size_t numClusters);
 };
 
 #endif /* FINDCLUSTERS_H_ */

@@ -25,10 +25,14 @@ struct Params
 	Distance *distance;
 	FindCenter *findCenter;
 
+	size_t numClusters;
+
 	Params()
 	{
 		distance = NULL;
 		findCenter = NULL;
+
+		numClusters = 5;
 
 		label ="";
 		database = "";
@@ -41,7 +45,7 @@ void printUsage()
 {
 	printf("This program creates clusters from labeled objects in the database\n");
 
-	printf("Usage: ./cluster -db <path to database> -l <object label> -d <distance function> -c <center function> \n\n");
+	printf("Usage: ./cluster -db <path to database> -l <object label> -n <num clusters> \n\n");
 }
 
 /*********************************************************************/
@@ -63,6 +67,10 @@ bool parseParams(Params *params, int argc, char **argv)
 		if (strcmp(p, "-l") == 0)
 		{
 			params->label = param;
+		}
+		else if (strcmp(p, "-n") == 0)
+		{
+			params->numClusters = atoi(param);
 		}
 		else if (strcmp(p, "-db") == 0)
 		{
@@ -117,7 +125,7 @@ int main(int argc, char **argv)
 
 	printf("loaded objects: %ld\n", objects.size());
 
-	FindClusters::findClusters(objects, 0.0, distance, findCenter);
+	FindClusters::findClusters(objects, 0.0, distance, findCenter, params.numClusters);
 
 	Shared::database.beginTransaction();
 

@@ -25,9 +25,8 @@ FindClusters::~FindClusters()
 
 /*********************************************************************/
 
-void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &findCenter)
+void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &findCenter, size_t numClusters)
 {
-	size_t numClusters = 30;
 	CVWindow win;
 
 	vector<Mat> centers;
