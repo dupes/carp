@@ -18,13 +18,13 @@ Object::Object(Database *db)
 	sql = "insert into objects (frame_id, object_image, x, y, width, height, area, number) values (?, ?, ?, ?, ?, ?, ?, ?)";
 	m_db->prepareStatement(&m_insertObject, sql);
 
-	sql = "select id, frame_id, object_image, contour, x, y, width, height, area, number, label, verified from objects where frame_id = ?";
+	sql = "select id, frame_id, object_image, contour, x, y, width, height, area, number, label, verified, cluster_id from objects where frame_id = ?";
 	m_db->prepareStatement(&m_findObjectsByFrameID, sql);
 
-	sql = "select id, frame_id, object_image, contour, x, y, width, height, area, number, label, verified from objects where label = ?";
+	sql = "select id, frame_id, object_image, contour, x, y, width, height, area, number, label, verified, cluster_id from objects where label = ?";
 	m_db->prepareStatement(&m_findObjectsByLabel, sql);
 
-	sql = "select c.id, c.frame_id, c.object_image, c.contour, c.x, c.y, c.width, c.height, c.number, c.label, c.verified from ";
+	sql = "select c.id, c.frame_id, c.object_image, c.contour, c.x, c.y, c.width, c.height, c.number, c.label, c.verified, c.cluster_id from ";
 	sql += "videos a inner join frames b on a.id = b.video_id inner join objects c on b.id = c.frame_id where label is not null and label <> '' and verified == 1";
 	// sql += " and height = 22 and width = 21 ";
 	// sql += " and label = 'pacman'";
@@ -34,7 +34,7 @@ Object::Object(Database *db)
 
 	m_db->prepareStatement(&m_findObjectsByVideoID, sql);
 
-	sql = "update objects set label = ?, verified = ? where id = ?";
+	sql = "update objects set label = ?, verified = ?, cluster_id = ? where id = ?";
 	m_db->prepareStatement(&m_updateObject, sql);
 
 	m_currentSelect = NULL;
@@ -91,7 +91,8 @@ bool Object::updateObject(tObject *object)
 
 	sqlite3_bind_text(m_updateObject, 1, object->label.c_str(), object->label.length(), SQLITE_STATIC);
 	sqlite3_bind_int(m_updateObject, 2, (object->verified ? 1 : 0));
-	sqlite3_bind_int(m_updateObject, 3, object->id);
+	sqlite3_bind_int(m_updateObject, 3, object->clusterID);
+	sqlite3_bind_int(m_updateObject, 4, object->id);
 
 	retval = sqlite3_step(m_updateObject);
 
@@ -182,10 +183,12 @@ bool Object::parseObject(tObject &object)
 
 	object.number = sqlite3_column_int(m_currentSelect, 9);
 
-	if (sqlite3_column_text(m_currentSelect, 10) != NULL)
-		object.label = (char *)sqlite3_column_text(m_currentSelect, 9);
+	if (sqlite3_column_text(m_currentSelect, 11) != NULL)
+		object.label = (char *)sqlite3_column_text(m_currentSelect, 10);
 
-	object.verified = (sqlite3_column_int(m_currentSelect, 10) == 0 ? false : true);
+	object.verified = (sqlite3_column_int(m_currentSelect, 11) == 0 ? false : true);
+
+	object.clusterID = sqlite3_column_int(m_currentSelect, 12);
 
 	return true;
 }
