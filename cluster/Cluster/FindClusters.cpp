@@ -9,6 +9,8 @@
 
 #include "FindClusters.h"
 
+#include "../shared/CVWindow.h"
+
 FindClusters::FindClusters()
 {
 }
@@ -24,6 +26,7 @@ FindClusters::~FindClusters()
 void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &findCenter)
 {
 	size_t numClusters = 2;
+	CVWindow win;
 
 	vector<Mat> centers;
 
@@ -31,8 +34,10 @@ void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistan
 
 	int count = 0;
 
-	centers.push_back(Mat());
-	centers.push_back(Mat());
+	win.createWindow("centers", 0);
+
+	//for (size_t clusterID = 0; clusterID < numClusters; clusterID++)
+	//		centers.push_back(Mat());
 
 	for (itr = objects.begin(); itr != objects.end(); itr++)
 	{
@@ -41,12 +46,16 @@ void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistan
 		count++;
 	}
 
-	centers = findCenter.findCenters(objects, &distance, 2);
+	centers = findCenter.findCenters(objects, &distance, numClusters);
 
 	bool modified = false;
 
+	count = 0;
+	int numChanged = 0;
+
 	while (1)
 	{
+
 		modified = false;
 
 		for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -63,16 +72,35 @@ void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistan
 					minDistance = d;
 					objectClusterID = clusterID;
 				}
+			}
 
-				if ((*itr)->clusterID != objectClusterID)
-				{
-					(*itr)->clusterID = objectClusterID;
-					modified = true;
-				}
+			if ((*itr)->clusterID != objectClusterID)
+			{
+				(*itr)->clusterID = objectClusterID;
+				modified = true;
+
+				numChanged++;
 			}
 		}
 
+		printf("end of round: %d, changed: %d\n", count+1, numChanged);
+
+		count++;
+
+		numChanged = 0;
+
 		if (!modified)
 			break;
+
+		modified = false;
+		centers = findCenter.findCenters(objects, &distance, 2);
 	}
+
+	for (size_t clusterID = 0; clusterID < numClusters; clusterID++)
+	{
+		win.showImage(centers[clusterID]);
+		win.waitKey(-1);
+	}
+
+
 }
