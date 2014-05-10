@@ -16,6 +16,10 @@
 
 #include "shared/Video.h"
 
+#include "FindObjects.h"
+
+#include "shared/FindEdges/FindEdgesCanny.h"
+
 /*********************************************************************/
 
 struct Params
@@ -108,6 +112,7 @@ bool parseParams(Params *params, int argc, char **argv)
 int main(int argc, char **argv)
 {
 	Timer timer;
+	list<tObject> objects;
 
 	Params params;
 	// Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
@@ -118,6 +123,10 @@ int main(int argc, char **argv)
 	Mat image, imageBW;
 	CVWindow window;
 	DetectObjects *detectObjects;
+
+	FindEdgesCanny *findEdges = new FindEdgesCanny(image, NULL, 100, 300, 3);
+
+	FindObjects *findObjects = new FindObjects(findEdges);
 
 	if (!parseParams(&params, argc, argv))
 	{
@@ -169,7 +178,11 @@ int main(int argc, char **argv)
 
 		cvtColor(image, imageBW, CV_BGR2GRAY);
 
-		detectObjects->detectObjects2(image, imageBW, 50, 150, 3);
+		findObjects->findObjects(image, imageBW, objects, 28);
+
+		// detectObjects->detectObjects2(image, imageBW, 50, 150, 3);
+
+		objects.clear();
 
 		// putText(image, s.str().c_str(), cvPoint(0,10), FONT_HERSHEY_PLAIN, 1, CV_RGB(255, 0, 0), 1);
 		// putText(frame, label.c_str(), cvPoint(rect.x, rect.y), FONT_HERSHEY_PLAIN, 1, color, 1)

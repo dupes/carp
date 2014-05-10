@@ -10,11 +10,20 @@
 
 #include "../shared/FindEdges/FindEdges.h"
 
+#include <list>
+
+#include "shared/Object.h"
+
 class FindObjects
 {
+private:
+	FindEdges *m_findEdges;
+
 public:
 	FindObjects(FindEdges *findEdges);
 	virtual ~FindObjects();
+
+	void findObjects(Mat &image, Mat &imageBW, list<tObject> &objects, int window);
 };
 
 #endif /* FINDOBJECTS_H_ */
