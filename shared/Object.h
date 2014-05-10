@@ -30,6 +30,7 @@ struct tObject
 	double area;
 
 	string label;
+	int clusterID;
 	bool verified;
 };
 

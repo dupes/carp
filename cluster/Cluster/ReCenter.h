@@ -10,9 +10,12 @@
 
 #include "../shared/Object.h"
 
+#include "Distance.h"
+
 using namespace std;
 
 #include <list>
+#include <vector>
 
 class ReCenter
 {
@@ -22,7 +25,7 @@ public:
 	ReCenter();
 	virtual ~ReCenter();
 
-	virtual Mat* reCenter(list<tObject*> objects) = 0;
+	virtual vector<Mat> reCenter(list<tObject*> objects, Distance *distance, int numClusters) = 0;
 };
 
 #endif /* RECENTER_H_ */

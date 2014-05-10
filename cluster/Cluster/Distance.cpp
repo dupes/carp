@@ -7,12 +7,11 @@
 
 #include "Distance.h"
 
-Distance::Distance() {
-	// TODO Auto-generated constructor stub
-
+Distance::Distance()
+{
 }
 
-Distance::~Distance() {
-	// TODO Auto-generated destructor stub
+Distance::~Distance()
+{
 }
 

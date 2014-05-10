@@ -7,8 +7,8 @@
 
 #include "Cluster.h"
 
-Cluster::Cluster() {
-	// TODO Auto-generated constructor stub
+Cluster::Cluster()
+{
 
 }
 

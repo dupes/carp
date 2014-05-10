@@ -7,12 +7,11 @@
 
 #include "ReCenter.h"
 
-ReCenter::ReCenter() {
-	// TODO Auto-generated constructor stub
-
+ReCenter::ReCenter()
+{
 }
 
-ReCenter::~ReCenter() {
-	// TODO Auto-generated destructor stub
+ReCenter::~ReCenter()
+{
 }
 

@@ -17,7 +17,7 @@ using namespace std;
 class Cluster
 {
 private:
-	list<tObject*> m_objects;
+	list<tObject*> *m_objects;
 
 	Mat *m_center;
 
