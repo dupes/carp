@@ -143,10 +143,10 @@ void MainWindow::handleMouseButtonClick(int event, int x, int y, int flags)
 
 /*********************************************************************/
 
-string MainWindow::getUserInput(string prompt)
+string MainWindow::getUserInput(string prompt, string startValue)
 {
 
-	string value = "";
+	string value = startValue;
 
 	while (1)
 	{
@@ -344,9 +344,9 @@ void MainWindow::findMatching()
 
 void MainWindow::saveLabels()
 {
-	string label;
+	static string label;
 
-	if ((label = getUserInput("enter label: ")) == "\r")
+	if ((label = getUserInput("enter label: ", label)) == "\r")
 	{
 		printf("save canceled\n");
 		return;

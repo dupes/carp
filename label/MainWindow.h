@@ -41,7 +41,7 @@ private:
 
 	double m_templateThresholdValue;
 
-	string getUserInput(string prompt);
+	string getUserInput(string prompt, string startValue="");
 
 	void setTrackbarPosition(int position);
 	void handleMouseButtonClick(int event, int x, int y, int flags);
