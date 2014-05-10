@@ -17,15 +17,15 @@ using namespace std;
 #include <list>
 #include <vector>
 
-class ReCenter
+class FindCenter
 {
 private:
 
 public:
-	ReCenter();
-	virtual ~ReCenter();
+	FindCenter();
+	virtual ~FindCenter();
 
-	virtual vector<Mat> reCenter(list<tObject*> objects, Distance *distance, int numClusters) = 0;
+	virtual vector<Mat> findCenter(list<tObject*> objects, Distance *distance, int numClusters) = 0;
 };
 
 #endif /* RECENTER_H_ */

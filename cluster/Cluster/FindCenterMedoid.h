@@ -8,9 +8,9 @@
 #ifndef RECENTERMEDOID_H_
 #define RECENTERMEDOID_H_
 
-#include "ReCenter.h"
+#include "FindCenter.h"
 
-class ReCenterMedoid : public ReCenter
+class ReCenterMedoid : public FindCenter
 {
 private:
 
@@ -20,7 +20,7 @@ public:
 	ReCenterMedoid();
 	virtual ~ReCenterMedoid();
 
-	virtual vector<Mat> reCenter(list<tObject*> objects, Distance *distance, int numClusters);
+	virtual vector<Mat> findCenter(list<tObject*> objects, Distance *distance, int numClusters);
 };
 
 #endif /* RECENTERMEDOID_H_ */

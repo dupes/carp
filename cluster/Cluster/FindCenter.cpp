@@ -5,13 +5,13 @@
  *      Author: dupes
  */
 
-#include "ReCenter.h"
+#include "FindCenter.h"
 
-ReCenter::ReCenter()
+FindCenter::FindCenter()
 {
 }
 
-ReCenter::~ReCenter()
+FindCenter::~FindCenter()
 {
 }
 

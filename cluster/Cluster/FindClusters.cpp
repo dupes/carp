@@ -19,7 +19,7 @@ FindClusters::~FindClusters()
 
 /*********************************************************************/
 
-void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, ReCenter &reCenter)
+void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &findCenter)
 {
 	vector<Mat> centers;
 
@@ -37,9 +37,9 @@ void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistan
 		count++;
 	}
 
-	centers = reCenter.reCenter(objects, &distance, 2);
+	centers = findCenter.findCenter(objects, &distance, 2);
 
-	bool modified;
+	bool modified = false;
 
 	while (1)
 	{

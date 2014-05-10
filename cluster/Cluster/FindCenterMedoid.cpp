@@ -5,7 +5,7 @@
  *      Author: dupes
  */
 
-#include "ReCenterMedoid.h"
+#include "FindCenterMedoid.h"
 
 ReCenterMedoid::ReCenterMedoid()
 {
@@ -26,7 +26,7 @@ Mat ReCenterMedoid::doReCenter(list<tObject*> objects, Distance *distance, int c
 
 /*********************************************************************/
 
-vector<Mat> ReCenterMedoid::reCenter(list<tObject*> objects, Distance *distance, int numClusters)
+vector<Mat> ReCenterMedoid::findCenter(list<tObject*> objects, Distance *distance, int numClusters)
 {
 	vector<Mat> mat;
 

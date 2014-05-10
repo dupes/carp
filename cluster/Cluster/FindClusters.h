@@ -11,7 +11,7 @@
 #include "../shared/Object.h"
 
 #include "Distance.h"
-#include "ReCenter.h"
+#include "FindCenter.h"
 
 #include "../Cluster.h"
 
@@ -28,7 +28,7 @@ public:
 	FindClusters();
 	virtual ~FindClusters();
 
-	static void findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, ReCenter &reCenter);
+	static void findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &reCenter);
 };
 
 #endif /* FINDCLUSTERS_H_ */
