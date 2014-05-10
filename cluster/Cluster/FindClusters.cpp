@@ -27,7 +27,7 @@ FindClusters::~FindClusters()
 
 void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistance, Distance &distance, FindCenter &findCenter)
 {
-	size_t numClusters = 10;
+	size_t numClusters = 30;
 	CVWindow win;
 
 	vector<Mat> centers;
@@ -43,7 +43,7 @@ void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistan
 
 	for (itr = objects.begin(); itr != objects.end(); itr++)
 	{
-		(*itr)->clusterID = count % numClusters;
+		(*itr)->clusterID = rand() % numClusters;
 
 		count++;
 	}

@@ -46,5 +46,18 @@ double DistanceMatchTemplate::distance(Mat *center, tObject *object)
 
 	minMaxLoc(m_match, &minVal, &maxVal, &minLoc, &maxLoc);
 
+	/*if (maxVal >= 1.0)
+	{
+		printf("max found: %f\n", maxVal);
+
+		win.createWindow("match", 0);
+		win.showImage(*center);
+		win.waitKey(-1);
+
+		win.showImage(object->object_image);
+		win.waitKey(-1);
+
+	}*/
+
 	return 1 - maxVal;
 }

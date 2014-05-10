@@ -64,7 +64,12 @@ Mat FindCenterMean::findCenter(list<tObject*> objects, Distance *distance, int c
 	// the resulting center matrix should be the same type as the incoming image
 	//result = Mat((*itr)->object_image.cols, (*itr)->object_image.rows, (*itr)->object_image.type(), 0.0);
 
-	divide(center, count, center);
+	if (count != 0)
+		divide(center, count, center);
+	else
+		// no items in the cluster.  returning a black tempalte causes
+		// matchTemplate to return a positive match so add some color to the template
+		center = Mat((*itr)->object_image.cols, (*itr)->object_image.rows, CV_64FC3, 255.0);
 
 	center.convertTo(center, (*itr)->object_image.depth());
 
