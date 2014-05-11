@@ -21,11 +21,15 @@
 
 #include "shared/Video.h"
 
+#include "Classifier/ClassifierSVM.h"
+
 struct Params
 {
 	std::string videoFile;
 	std::string database;
 	std::string recognizerFile;
+
+	std::string label;
 
 	bool useDatabase;
 	bool train;
@@ -52,7 +56,7 @@ void printUsage()
 	printf("  that are later used in classification.  The clustering data is saved to\n");
 	printf("  the database\n\n");
 
-	printf("Usage: ./classify -v <video name in database> -db <path to database> -f <recognizer file> --train <true or false>\n\n");
+	printf("Usage: ./classify -v <video name in database> -db <path to database> -f <recognizer file>  -l <label> --train <true or false>\n\n");
 
 }
 
@@ -91,6 +95,10 @@ bool parseParams(Params *params, int argc, char **argv)
 		else if (strcmp(p, "-f") == 0)
 		{
 			params->recognizerFile = param;
+		}
+		else if (strcmp(p, "-l") == 0)
+		{
+			params->label = param;
 		}
 		else if (strcmp(p, "--train") == 0)
 		{
@@ -352,6 +360,13 @@ void loadObjects(map<int, tObject*> &objects, vector<Mat> &images, vector<int> &
 
 /*********************************************************************/
 
+void initSamples(map<int, tObject*> objects, list<int> positive, list<int> negative, list<int> test, string label)
+{
+
+}
+
+/*********************************************************************/
+
 int main(int argc, char **argv)
 {
 	Params params;
@@ -394,8 +409,19 @@ int main(int argc, char **argv)
 	while ((tobject = object->nextObject()) != NULL)
 		objects[tobject->id] = tobject;
 
+
 	printf("loaded objects: %ld\n", objects.size());
 
+	list<int> positive;
+	list<int> negative;
+	list<int> test;
+	ClassifierSVM svm;
+
+	initSamples(objects, positive, negative, test, params.label);
+
+	svm.train(objects, positive, negative, test);
+
+	/*
 	loadObjects(objects, images, labels, imagesToClassify, imagesToClassifyID);
 
 	// Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
@@ -415,6 +441,7 @@ int main(int argc, char **argv)
 	printf("program complete\n");
 
 	cvWaitKey(0);
+*/
 
 	delete (video);
 	delete (object);

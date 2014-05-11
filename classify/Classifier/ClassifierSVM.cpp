@@ -20,7 +20,7 @@ ClassifierSVM::~ClassifierSVM()
 
 /*********************************************************************/
 
-void ClassifierSVM::train(map<int, tObject*> objects, list<int> positive, list<int> negative, list<int> test)
+void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative, list<int> &test)
 {
 
 }

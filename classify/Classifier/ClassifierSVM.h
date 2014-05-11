@@ -17,7 +17,7 @@ public:
 	ClassifierSVM();
 	virtual ~ClassifierSVM();
 
-	virtual void train(map<int, tObject*> objects, list<int> positive, list<int> negative, list<int> test);
+	virtual void train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative, list<int> &test);
 
 	virtual void load(string file);
 	virtual void save(string file);
