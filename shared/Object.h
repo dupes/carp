@@ -32,6 +32,24 @@ struct tObject
 	string label;
 	int clusterID;
 	bool verified;
+
+	tObject(){};
+
+	tObject(const tObject &object)
+	{
+		// printf("copy construct\n");
+		id = object.id;
+		frame_id = object.frame_id;
+
+		object.object_image.copyTo(object_image);
+
+		boundingBox = object.boundingBox;
+		number = object.number;
+
+		label = object.label;
+		clusterID = object.clusterID;
+		verified = object.verified;
+	}
 };
 
 class Object
