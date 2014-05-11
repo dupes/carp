@@ -372,12 +372,26 @@ void initSamples(map<int, tObject*> objects, list<int> &positive, list<int> &neg
 		{
 			if (obj->clusterID == clusterID)
 			{
-				positive.push_back(id);
+				if (rand() % 100 < 20)
+				{
+					testpos.push_back(id);
+				}
+				else
+				{
+					positive.push_back(id);
+				}
 			}
 		}
 		else
 		{
-			negative.push_back(id);
+			if (rand() % 100 < 20)
+			{
+				testneg.push_back(id);
+			}
+			else
+			{
+				negative.push_back(id);
+			}
 		}
 	}
 

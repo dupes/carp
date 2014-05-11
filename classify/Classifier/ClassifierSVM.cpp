@@ -29,17 +29,9 @@ ClassifierSVM::~ClassifierSVM()
 
 /*********************************************************************/
 
-void ClassifierSVM::flatten(Mat &input, Mat &output)
+
+void ClassifierSVM::prepareData(map<int, tObject*> &objects, list<int> &positive, list<int> &negative, Mat &trainingData, Mat &labels)
 {
-
-}
-
-/*********************************************************************/
-
-void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative)
-{
-	// TODO: normalize to 0 mean and 1 stddev
-
 	tObject *object = (*objects.begin()).second;
 
 	int rows = object->object_image.rows;
@@ -47,8 +39,8 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 
 	int imageArea = rows * cols;
 
-	Mat trainingData(positive.size() + negative.size(), imageArea, CV_32FC1);
-	Mat labels(positive.size() + negative.size(), 1, CV_32FC1);
+	trainingData = Mat(positive.size() + negative.size(), imageArea, CV_32FC1);
+	labels = Mat(positive.size() + negative.size(), 1, CV_32FC1);
 
 	int sample = 0;
 
@@ -103,10 +95,30 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 		sample++;
 	}
 
+}
+
+/*********************************************************************/
+
+void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative)
+{
+	// TODO: normalize to 0 mean and 1 stddev
+	Mat trainingData;//(positive.size() + negative.size(), imageArea, CV_32FC1);
+	Mat labels;//(positive.size() + negative.size(), 1, CV_32FC1);
+
+	prepareData(objects, positive, negative, trainingData, labels);
+
 	m_svm.train(trainingData, labels, Mat(), Mat(), m_params);
 
-	//printf("test: %f\n", m_svm.predict(trainingData.row(0)));
-	//printf("test: %f\n", m_svm.predict(trainingData.row(sample-1)));
+	int sample = positive.size() + negative.size();
+
+	printf("test: %f\n", m_svm.predict(trainingData.row(0)));
+	printf("test: %f\n", m_svm.predict(trainingData.row(sample-1)));
+}
+
+/*********************************************************************/
+
+void ClassifierSVM::test(map<int, tObject*> &objects, list<int> &positive, list<int> &negative)
+{
 }
 
 /*********************************************************************/
