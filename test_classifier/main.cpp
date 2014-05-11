@@ -20,6 +20,8 @@
 
 #include "shared/FindEdges/FindEdgesCanny.h"
 
+#include "ClassifyObjects/ClassifyObjectsSVM.h"
+
 /*********************************************************************/
 
 struct Params
@@ -55,7 +57,7 @@ void printUsage()
 	printf("  that are later used in classification.  The clustering data is saved to\n");
 	printf("  the database\n\n");
 
-	printf("Usage: ./test_classifier -v <video name in database> -f <recognizer file> -h <homography file> \n\n");
+	printf("Usage: ./test_classifier -v <video name in database> -h <homography file> \n\n");
 
 }
 
@@ -125,13 +127,13 @@ int main(int argc, char **argv)
 
 	Params params;
 	// Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
-	Ptr<FaceRecognizer> model = createEigenFaceRecognizer();
+	// Ptr<FaceRecognizer> model = createEigenFaceRecognizer();
 	// Ptr<FaceRecognizer> model = createLBPHFaceRecognizer();
 
 	CVCapture capture;
 	Mat image, imageBW;
 	CVWindow window;
-	DetectObjects *detectObjects;
+	// DetectObjects *detectObjects;
 
 	FindEdgesCanny *findEdges = new FindEdgesCanny(image, NULL, 100, 300, 3);
 
@@ -143,20 +145,18 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	model->load(params.recognizerFile);
+	// model->load(params.recognizerFile);
 
-	detectObjects = new DetectObjects(model);
-
-
+	// detectObjects = new DetectObjects(model);
 	window.createWindow("main", 0);
 
 	bool play = true;
 
-	int key;
+	int key = 0;
 	int numFrames = 0;
 	double fps;
 	stringstream s;
-
+;
 	timer.start();
 
 	if (!capture.openFile(params.videoFile.c_str()))
@@ -167,6 +167,12 @@ int main(int argc, char **argv)
 	}
 
 	// capture.setResolution(320, 240);
+
+	ClassifyObjectsSVM pacman;
+	ClassifyObjectsSVM ghosts;
+
+	pacman.loadClassifers("pacman");
+	ghosts.loadClassifers("ghost");
 
 	while (1)
 	{
@@ -217,7 +223,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	detectObjects->printStats();
+	// detectObjects->printStats();
 
 	return 0;
 }

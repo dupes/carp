@@ -10,7 +10,6 @@
 
 #include "Classifier.h"
 
-
 class ClassifierSVM : public Classifier
 {
 

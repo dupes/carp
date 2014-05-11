@@ -29,6 +29,7 @@ srclst = map(lambda x: builddir + '/' + x, glob.glob('*.cpp'))
 srclst += map(lambda x: builddir + '/' + x, glob.glob('shared/*.cpp'))
 srclst += map(lambda x: builddir + '/' + x, glob.glob('shared/FindEdges/*.cpp'))
 srclst += map(lambda x: builddir + '/' + x, glob.glob('shared/BlurImage/*.cpp'))
+srclst += map(lambda x: builddir + '/' + x, glob.glob('ClassifyObjects/*.cpp'))
 
 
 #for file in shared:
