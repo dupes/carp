@@ -37,16 +37,6 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 	Mat trainingData(positive.size() + negative.size(), imageArea, CV_32FC1);
 	Mat labels(positive.size() + negative.size(), 1, CV_32FC1);
 
-	/*Mat wtf(10, 10, CV_32FC1);
-
-	// obj->object_image.
-
-	printf("%d, %d, %d\n", rows, cols, imageArea);
-
-	printf("%d, %d, %d, %d\n", trainingData.rows, trainingData.cols, trainingData.type(), trainingData.depth());
-
-	printf("%d, %d, %d, %d\n", wtf.rows, wtf.cols, wtf.type(), wtf.depth());*/
-
 	int sample = 0;
 
 	for (list<int>::iterator itr = positive.begin(); itr != positive.end(); itr++)
@@ -99,8 +89,6 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 		labels.at<float>(Point(0, sample)) = -1.0;
 		sample++;
 	}
-
-	// printf("%d, %d, %d, %d\n", trainingData.depth(), trainingData.rows, trainingData.cols, trainingData.type());
 
 	m_svm.train(trainingData, labels, Mat(), Mat(), m_params);
 
