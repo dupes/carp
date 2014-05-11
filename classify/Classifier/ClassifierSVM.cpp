@@ -19,7 +19,7 @@ ClassifierSVM::ClassifierSVM(string name, size_t clusterID)
 
 	m_svmName = s.str();
 
-	m_fileName = name + ".xml";
+	m_fileName = string("../../data/classify/") + m_svmName + ".xml";
 }
 
 /*********************************************************************/
@@ -143,7 +143,8 @@ void ClassifierSVM::test(map<int, tObject*> &objects, list<int> &positive, list<
 		}
 	}
 
-	printf(" false positves: %d\n false negatives: %d\n", falsePositives, falseNegatives);
+	printf(" false positves: %d\n false negatives: %d\n\n", falsePositives, falseNegatives);
+
 }
 
 /*********************************************************************/
@@ -157,6 +158,5 @@ void ClassifierSVM::load(string file)
 
 void ClassifierSVM::save(string file)
 {
-
 	m_svm.save(m_fileName.c_str(), m_svmName.c_str());
 }

@@ -418,7 +418,6 @@ int main(int argc, char **argv)
 	vector<int> imagesToClassifyID;
 
 	srand (time(NULL));
-
 	if (!parseParams(&params, argc, argv))
 	{
 		printUsage();
@@ -443,24 +442,40 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	map<int, int> clusterIDs;
+
 	while ((tobject = object->nextObject()) != NULL)
+	{
 		objects[tobject->id] = tobject;
 
-	http://stackoverflow.com/questions/14694810/using-opencv-and-svm-with-images
+		if (tobject->label == params.label)
+		{
+			if (clusterIDs.find(tobject->clusterID) == clusterIDs.end())
+				clusterIDs[tobject->clusterID] = tobject->clusterID;
+		}
+	}
+
 	printf("loaded objects: %ld\n", objects.size());
 
-	list<int> positive;
-	list<int> negative;
-	list<int> testpos;
-	list<int> testneg;
+	for (map<int, int>::iterator itr = clusterIDs.begin(); itr != clusterIDs.end(); itr++)
+	{
+		list<int> positive;
+		list<int> negative;
+		list<int> testpos;
+		list<int> testneg;
 
-	ClassifierSVM svm(params.label, 0);
+		int clusterID = (*itr).first;
 
-	initSamples(objects, positive, negative, testpos, testneg, params.label, 0);
+		ClassifierSVM svm(params.label, clusterID);
 
-	svm.train(objects, positive, negative);
+		initSamples(objects, positive, negative, testpos, testneg, params.label, clusterID);
 
-	svm.test(objects, testpos, testneg);
+		svm.train(objects, positive, negative);
+
+		svm.test(objects, testpos, testneg);
+
+		svm.save("");
+	}
 
 	/*
 	loadObjects(objects, images, labels, imagesToClassify, imagesToClassifyID);
