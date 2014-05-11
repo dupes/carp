@@ -193,6 +193,7 @@ int main(int argc, char **argv)
 
 		// detectObjects->detectObjects2(image, imageBW, 50, 150, 3);
 
+		// printf("objects: %d\n", objects.size());
 		objects.clear();
 
 		// putText(image, s.str().c_str(), cvPoint(0,10), FONT_HERSHEY_PLAIN, 1, CV_RGB(255, 0, 0), 1);
