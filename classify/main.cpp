@@ -417,6 +417,8 @@ int main(int argc, char **argv)
 	vector<Mat> imagesToClassify;
 	vector<int> imagesToClassifyID;
 
+	srand (time(NULL));
+
 	if (!parseParams(&params, argc, argv))
 	{
 		printUsage();
@@ -457,6 +459,8 @@ int main(int argc, char **argv)
 	initSamples(objects, positive, negative, testpos, testneg, params.label, 0);
 
 	svm.train(objects, positive, negative);
+
+	svm.test(objects, testpos, testneg);
 
 	/*
 	loadObjects(objects, images, labels, imagesToClassify, imagesToClassifyID);

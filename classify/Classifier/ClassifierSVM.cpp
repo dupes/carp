@@ -111,21 +111,27 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 
 	int sample = positive.size() + negative.size();
 
-	printf("test: %f\n", m_svm.predict(trainingData.row(0)));
-	printf("test: %f\n", m_svm.predict(trainingData.row(sample-1)));
+	// printf("test: %f\n", m_svm.predict(trainingData.row(0)));
+	// printf("test: %f\n", m_svm.predict(trainingData.row(sample-1)));
 }
 
 /*********************************************************************/
 
 void ClassifierSVM::test(map<int, tObject*> &objects, list<int> &positive, list<int> &negative)
 {
-	Mat trainingData;
+	Mat testingData;
 	Mat labels;
 	Mat results(positive.size() + negative.size(), 1, CV_32FC1);
 
-	prepareData(objects, positive, negative, trainingData, labels);
+	prepareData(objects, positive, negative, testingData, labels);
 
-	m_svm.predict(trainingData, results);
+	m_svm.predict(testingData, results);
+
+	for (size_t index = 0; index < positive.size() + negative.size(); index++)
+	{
+		if (labels.at<float>(index, 0) != results.at<float>(index, 0))
+			printf("mismatch: %lu, %f\n", index, results.at<float>(index, 0));
+	}
 }
 
 /*********************************************************************/
