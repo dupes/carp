@@ -15,10 +15,11 @@ ClassifierSVM::ClassifierSVM(string name, size_t clusterID)
 	m_params.term_crit   = cvTermCriteria(CV_TERMCRIT_ITER, 100, 1e-6);
 
 	stringstream s;
-
 	s << name << clusterID;
 
-	m_name = name;
+	m_svmName = s.str();
+
+	m_fileName = name + ".xml";
 }
 
 /*********************************************************************/
@@ -109,8 +110,7 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 
 	m_svm.train(trainingData, labels, Mat(), Mat(), m_params);
 
-	int sample = positive.size() + negative.size();
-
+	// int sample = positive.size() + negative.size();
 	// printf("test: %f\n", m_svm.predict(trainingData.row(0)));
 	// printf("test: %f\n", m_svm.predict(trainingData.row(sample-1)));
 }
@@ -123,6 +123,9 @@ void ClassifierSVM::test(map<int, tObject*> &objects, list<int> &positive, list<
 	Mat labels;
 	Mat results(positive.size() + negative.size(), 1, CV_32FC1);
 
+	int falsePositives = 0;
+	int falseNegatives = 0;
+
 	prepareData(objects, positive, negative, testingData, labels);
 
 	m_svm.predict(testingData, results);
@@ -130,20 +133,30 @@ void ClassifierSVM::test(map<int, tObject*> &objects, list<int> &positive, list<
 	for (size_t index = 0; index < positive.size() + negative.size(); index++)
 	{
 		if (labels.at<float>(index, 0) != results.at<float>(index, 0))
+		{
 			printf("mismatch: %lu, %f\n", index, results.at<float>(index, 0));
+
+			if (labels.at<float>(index, 0) == 1.0)
+				falseNegatives++;
+			else
+				falsePositives++;
+		}
 	}
+
+	printf(" false positves: %d\n false negatives: %d\n", falsePositives, falseNegatives);
 }
 
 /*********************************************************************/
 
 void ClassifierSVM::load(string file)
 {
-	m_svm.load(file.c_str(), m_name.c_str());
+	m_svm.load(m_fileName.c_str(), m_svmName.c_str());
 }
 
 /*********************************************************************/
 
 void ClassifierSVM::save(string file)
 {
-	m_svm.save(file.c_str(), m_name.c_str());
+
+	m_svm.save(m_fileName.c_str(), m_svmName.c_str());
 }

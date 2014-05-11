@@ -15,7 +15,8 @@ class ClassifierSVM : public Classifier
 {
 
 private:
-	string m_name;
+	string m_fileName;
+	string m_svmName;
 
 	CvSVM m_svm;
 	CvSVMParams m_params;
