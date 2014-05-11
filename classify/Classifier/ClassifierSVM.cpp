@@ -119,6 +119,13 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 
 void ClassifierSVM::test(map<int, tObject*> &objects, list<int> &positive, list<int> &negative)
 {
+	Mat trainingData;
+	Mat labels;
+	Mat results(positive.size() + negative.size(), 1, CV_32FC1);
+
+	prepareData(objects, positive, negative, trainingData, labels);
+
+	m_svm.predict(trainingData, results);
 }
 
 /*********************************************************************/

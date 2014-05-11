@@ -396,6 +396,8 @@ void initSamples(map<int, tObject*> objects, list<int> &positive, list<int> &neg
 	}
 
 	printf("positive samples: %lu\nnegative samples: %lu\n", positive.size(), negative.size());
+	printf("positive test samples: %lu\nnegative test samples: %lu\n", testpos.size(), testneg.size());
+
 }
 
 /*********************************************************************/
