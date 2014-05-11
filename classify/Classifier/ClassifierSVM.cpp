@@ -36,7 +36,7 @@ void ClassifierSVM::flatten(Mat &input, Mat &output)
 
 /*********************************************************************/
 
-void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative, list<int> &test)
+void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative)
 {
 	// TODO: normalize to 0 mean and 1 stddev
 
@@ -64,6 +64,7 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 
 		// stack overflow: convert image to vector
 		// http://stackoverflow.com/questions/14694810/using-opencv-and-svm-with-images
+		// should be replaced
 		int ii = 0;
 		for (int i = 0; i< image.rows; i++)
 		{
@@ -104,10 +105,8 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 
 	m_svm.train(trainingData, labels, Mat(), Mat(), m_params);
 
-	printf("test: %f\n", m_svm.predict(trainingData.row(0)));
-
-	printf("test: %f\n", m_svm.predict(trainingData.row(sample-1)));
-
+	//printf("test: %f\n", m_svm.predict(trainingData.row(0)));
+	//printf("test: %f\n", m_svm.predict(trainingData.row(sample-1)));
 }
 
 /*********************************************************************/

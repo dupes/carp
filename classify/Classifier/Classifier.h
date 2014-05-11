@@ -22,7 +22,7 @@ public:
 	Classifier();
 	virtual ~Classifier();
 
-	virtual void train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative, list<int> &test) = 0;
+	virtual void train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative) = 0;
 
 	virtual void load(string file) = 0;
 	virtual void save(string file) = 0;

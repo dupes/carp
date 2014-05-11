@@ -26,7 +26,7 @@ public:
 	ClassifierSVM(string name, size_t clusterID);
 	virtual ~ClassifierSVM();
 
-	virtual void train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative, list<int> &test);
+	virtual void train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative);
 
 	virtual void load(string file);
 	virtual void save(string file);
