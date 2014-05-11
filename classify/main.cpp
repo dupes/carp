@@ -432,7 +432,7 @@ int main(int argc, char **argv)
 	list<int> positive;
 	list<int> negative;
 	list<int> test;
-	ClassifierSVM svm;
+	ClassifierSVM svm(params.label, 0);
 
 	initSamples(objects, positive, negative, test, params.label, 0);
 

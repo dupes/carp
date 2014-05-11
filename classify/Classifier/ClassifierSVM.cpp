@@ -7,18 +7,31 @@
 
 #include "ClassifierSVM.h"
 
-ClassifierSVM::ClassifierSVM()
+ClassifierSVM::ClassifierSVM(string name, size_t clusterID)
 {
 	m_params.svm_type    = CvSVM::C_SVC;
 	m_params.kernel_type = CvSVM::LINEAR;
 
 	m_params.term_crit   = cvTermCriteria(CV_TERMCRIT_ITER, 100, 1e-6);
+
+	stringstream s;
+
+	s << name << clusterID;
+
+	m_name = name;
 }
 
 /*********************************************************************/
 
 ClassifierSVM::~ClassifierSVM()
 {
+}
+
+/*********************************************************************/
+
+void ClassifierSVM::flatten(Mat &input, Mat &output)
+{
+
 }
 
 /*********************************************************************/
@@ -49,9 +62,8 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 
 		cvtColor(image, image, CV_BGR2GRAY);
 
-		//for (int index = 0; index < rows; index++)
-		//	image.row(index).copyTo(trainingData.row(sample)(Rect(0,0,0,0)));
-
+		// stack overflow: convert image to vector
+		// http://stackoverflow.com/questions/14694810/using-opencv-and-svm-with-images
 		int ii = 0;
 		for (int i = 0; i< image.rows; i++)
 		{
@@ -102,10 +114,12 @@ void ClassifierSVM::train(map<int, tObject*> &objects, list<int> &positive, list
 
 void ClassifierSVM::load(string file)
 {
+	m_svm.load(file.c_str(), m_name.c_str());
 }
 
 /*********************************************************************/
 
 void ClassifierSVM::save(string file)
 {
+	m_svm.save(file.c_str(), m_name.c_str());
 }

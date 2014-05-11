@@ -15,11 +15,15 @@ class ClassifierSVM : public Classifier
 {
 
 private:
+	string m_name;
+
 	CvSVM m_svm;
 	CvSVMParams m_params;
 
+	void flatten(Mat &input, Mat &output);
+
 public:
-	ClassifierSVM();
+	ClassifierSVM(string name, size_t clusterID);
 	virtual ~ClassifierSVM();
 
 	virtual void train(map<int, tObject*> &objects, list<int> &positive, list<int> &negative, list<int> &test);
