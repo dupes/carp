@@ -360,9 +360,26 @@ void loadObjects(map<int, tObject*> &objects, vector<Mat> &images, vector<int> &
 
 /*********************************************************************/
 
-void initSamples(map<int, tObject*> objects, list<int> positive, list<int> negative, list<int> test, string label)
+void initSamples(map<int, tObject*> objects, list<int> &positive, list<int> &negative, list<int> &test, string label, int clusterID)
 {
+	// TODO: select random set of positive samples for testing
+	for (map<int, tObject*>::iterator itr = objects.begin(); itr != objects.end(); itr++)
+	{
+		int id = (*itr).first;
+		tObject *obj = (*itr).second;
 
+		if (obj->label == label)
+		{
+			if (obj->clusterID == clusterID)
+				positive.push_back(id);
+		}
+		else
+		{
+			negative.push_back(id);
+		}
+	}
+
+	printf("positive samples: %lu\nnegative samples: %lu\n", positive.size(), negative.size());
 }
 
 /*********************************************************************/
@@ -417,7 +434,7 @@ int main(int argc, char **argv)
 	list<int> test;
 	ClassifierSVM svm;
 
-	initSamples(objects, positive, negative, test, params.label);
+	initSamples(objects, positive, negative, test, params.label, 0);
 
 	svm.train(objects, positive, negative, test);
 

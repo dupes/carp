@@ -8,6 +8,8 @@
 #ifndef CLASSIFIER_H_
 #define CLASSIFIER_H_
 
+#include <opencv2/ml/ml.hpp>
+
 #include "../shared/Object.h"
 
 #include <map>

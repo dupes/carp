@@ -13,6 +13,11 @@
 
 class ClassifierSVM : public Classifier
 {
+
+private:
+	CvSVM m_svm;
+	CvSVMParams m_params;
+
 public:
 	ClassifierSVM();
 	virtual ~ClassifierSVM();
