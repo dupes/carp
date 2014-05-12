@@ -7,4 +7,3 @@ database/*.sqlite
 RemoteSystemTempFiles
 .sconsign.dblite
 database/db2.sqlite-journal
-data/
