@@ -12,9 +12,9 @@ ClassifierSVM::ClassifierSVM(string name, size_t clusterID)
 	m_params.svm_type    = CvSVM::C_SVC;
 	m_params.kernel_type = CvSVM::POLY;
 
-	m_params.term_crit   = cvTermCriteria(CV_TERMCRIT_ITER, 1000, 1e-6);
+	m_params.term_crit   = cvTermCriteria(CV_TERMCRIT_ITER, 5000, 1e-6);
 
-	m_params.degree = 2.0;
+	m_params.degree = 4.0;
 
 	stringstream s;
 	s << name << clusterID;
