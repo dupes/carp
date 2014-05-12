@@ -25,7 +25,7 @@ Object::Object(Database *db)
 	m_db->prepareStatement(&m_findObjectsByLabel, sql);
 
 	sql = "select c.id, c.frame_id, c.object_image, c.contour, c.x, c.y, c.width, c.height, area, c.number, c.label, c.verified, c.cluster_id from ";
-	sql += "videos a inner join frames b on a.id = b.video_id inner join objects c on b.id = c.frame_id where label is not null and label <> '' and verified == 1";
+	sql += "videos a inner join frames b on a.id = b.video_id inner join objects c on b.id = c.frame_id";// where label is not null and label <> '' and verified == 1";
 	// sql += " and height = 22 and width = 21 ";
 	// sql += " and label = 'pacman'";
 
