@@ -68,6 +68,7 @@ void ClassifyObjectsSVM::classifyObjects(list<tObject> &objects, list<tMatch> &m
 	// CVWindow win;
 
 	// win.createWindow("found", 0);
+	int objecsChecked = 0;
 
 	for (list<tObject>::iterator itr = objects.begin(); itr != objects.end(); itr++)
 	{
@@ -76,6 +77,8 @@ void ClassifyObjectsSVM::classifyObjects(list<tObject> &objects, list<tMatch> &m
 		Rect rect = (*itr).boundingBox;
 		if (rect.width * rect.height < 150)
 			continue;
+
+		objecsChecked++;
 
 		(*itr).object_image.copyTo(image);
 
@@ -107,4 +110,7 @@ void ClassifyObjectsSVM::classifyObjects(list<tObject> &objects, list<tMatch> &m
 			}
 		}
 	}
+
+	printf("checked: %d\n", objecsChecked);
+
 }
