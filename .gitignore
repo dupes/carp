@@ -6,4 +6,4 @@ videos
 database/*.sqlite
 RemoteSystemTempFiles
 .sconsign.dblite
-database/db2.sqlite-journal
+database/*journal
