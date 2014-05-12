@@ -58,3 +58,53 @@ void ClassifyObjectsSVM::loadClassifers(string name)
 
 	}
 }
+
+/*********************************************************************/
+
+#include "../shared/CVWindow.h"
+
+void ClassifyObjectsSVM::classifyObjects(list<tObject> &objects, list<tMatch> &matches)
+{
+	// CVWindow win;
+
+	// win.createWindow("found", 0);
+
+	for (list<tObject>::iterator itr = objects.begin(); itr != objects.end(); itr++)
+	{
+		Mat image;// = (*itr).object_image;
+
+		Rect rect = (*itr).boundingBox;
+		if (rect.width * rect.height < 150)
+			continue;
+
+		(*itr).object_image.copyTo(image);
+
+		cvtColor(image, image, CV_BGR2GRAY);
+
+		Mat flatened(1, image.rows*image.cols, CV_32FC1);
+
+		int ii = 0;
+		for (int i = 0; i< image.rows; i++)
+		{
+		    for (int j = 0; j < image.cols; j++)
+		    {
+		    	flatened.at<float>(0, ii++) = image.at<uchar>(i,j);
+		    }
+		}
+
+		for (map<string, CvSVM*>::iterator svmItr = m_svms.begin(); svmItr != m_svms.end(); svmItr++)
+		{
+			float val = (*svmItr).second->predict(flatened);
+
+			if (val == 1.0)
+			{
+				matches.push_back(tMatch(&(*itr), (*svmItr).first));
+
+				//win.showImage((*itr).object_image);
+
+				//win.waitKey(-1);
+				break;
+			}
+		}
+	}
+}

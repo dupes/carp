@@ -8,12 +8,27 @@
 #ifndef CLASSIFYOBJECTSSVM_H_
 #define CLASSIFYOBJECTSSVM_H_
 
+#include "../shared/Object.h"
+
 #include <opencv2/ml/ml.hpp>
 
 #include <string>
 #include <map>
+#include <list>
 
 using namespace std;
+
+struct tMatch
+{
+	tObject *object;
+	string label;
+
+	tMatch(tObject *aobject, string alabel)
+	{
+		object = aobject;
+		label = alabel;
+	}
+};
 
 class ClassifyObjectsSVM
 {
@@ -25,6 +40,8 @@ public:
 	virtual ~ClassifyObjectsSVM();
 
 	void loadClassifers(string name);
+
+	void classifyObjects(list<tObject> &objects, list<tMatch> &matches);
 };
 
 #endif /* CLASSIFYOBJECTSSVM_H_ */

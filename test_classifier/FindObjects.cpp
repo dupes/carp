@@ -37,9 +37,6 @@ void FindObjects::findObjects(Mat &image, Mat &imageBW, list<tObject> &objects, 
 
 		if (rect.width <= window && rect.height <= window && rect.x + window < image.cols && rect.y + window < image.rows)
 		{
-			//rectangle(image, cvPoint(rect.x, rect.y), cvPoint(rect.x + rect.width, rect.y + rect.height),
-			//		CV_RGB(255, 0, 0), 1, 0, 0);
-
 			obj.area = rect.area();
 
 			obj.boundingBox = rect;
@@ -49,7 +46,11 @@ void FindObjects::findObjects(Mat &image, Mat &imageBW, list<tObject> &objects, 
 			image(rect).copyTo(obj.object_image(Rect(0,0,rect.width, rect.height)));
 
 			objects.push_back(obj);
+
+			//rectangle(image, cvPoint(rect.x, rect.y), cvPoint(rect.x + rect.width, rect.y + rect.height),
+			//		CV_RGB(255, 0, 0), 1, 0, 0);
 		}
+
 
 	}
 

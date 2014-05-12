@@ -6,8 +6,6 @@
 
 #include <iostream>
 
-#include "DetectObjects.h"
-
 #include "shared/CVWindow.h"
 #include "shared/CVCapture.h"
 #include "shared/Timer.h"
@@ -156,7 +154,7 @@ int main(int argc, char **argv)
 	int numFrames = 0;
 	double fps;
 	stringstream s;
-;
+
 	timer.start();
 
 	if (!capture.openFile(params.videoFile.c_str()))
@@ -196,6 +194,40 @@ int main(int argc, char **argv)
 		cvtColor(image, imageBW, CV_BGR2GRAY);
 
 		findObjects->findObjects(image, imageBW, objects, 28);
+
+		list<tMatch> matches;
+
+		pacman.classifyObjects(objects, matches);
+
+		printf("pacman matches: %lu\n", matches.size());
+
+		for (list<tMatch>::iterator itr = matches.begin(); itr != matches.end(); itr++)
+		{
+			Rect rect = (*itr).object->boundingBox;
+
+			putText(image, (*itr).label.c_str(), cvPoint(rect.x, rect.y), FONT_HERSHEY_PLAIN, 1, CV_RGB(255, 0, 0), 1);
+
+			rectangle(image, cvPoint(rect.x, rect.y), cvPoint(rect.x + rect.width, rect.y + rect.height),
+					CV_RGB(255, 0, 0), 1, 0, 0);
+
+		}
+
+		matches.clear();
+
+		ghosts.classifyObjects(objects, matches);
+
+		printf("ghost matches: %lu\n", matches.size());
+
+		for (list<tMatch>::iterator itr = matches.begin(); itr != matches.end(); itr++)
+		{
+			Rect rect = (*itr).object->boundingBox;
+
+			putText(image, (*itr).label.c_str(), cvPoint(rect.x, rect.y), FONT_HERSHEY_PLAIN, 1, CV_RGB(255, 0, 0), 1);
+
+			rectangle(image, cvPoint(rect.x, rect.y), cvPoint(rect.x + rect.width, rect.y + rect.height),
+					CV_RGB(255, 0, 0), 1, 0, 0);
+
+		}
 
 		// detectObjects->detectObjects2(image, imageBW, 50, 150, 3);
 
