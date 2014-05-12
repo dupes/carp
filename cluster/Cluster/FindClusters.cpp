@@ -97,11 +97,32 @@ void FindClusters::findClusters(list<tObject*> &objects, double clusterMaxDistan
 		centers = findCenter.findCenters(objects, &distance, numClusters);
 	}
 
+	Mat result = Mat::zeros(300, 300, ((*objects.begin())->object_image.type()));
+
+	int colCount = 10;
+
 	for (size_t clusterID = 0; clusterID < numClusters; clusterID++)
 	{
-		win.showImage(centers[clusterID]);
-		win.waitKey(-1);
+		Mat tempImage = centers[clusterID];
+
+		Rect location;
+
+		location.width = tempImage.cols;
+		location.height = tempImage.rows;
+		location.x = (clusterID % colCount) * tempImage.cols;
+		location.y = (clusterID / colCount) * tempImage.rows;
+
+		// Mat dest = result(Rect(0 + count * templ.cols, 0, templ.cols + count * templ.cols, templ.rows));
+		// Mat dest = result(Rect((count % colCount) * templ.cols, (count / colCount) * templ.rows, templ.cols, templ.rows));
+		Mat dest = result(location);
+
+		// itr->second->object_image.copyTo((dest));
+		tempImage.copyTo(dest);
 	}
 
+	// win.showImage(centers[clusterID]);
+	win.showImage(result);
+	win.waitKey(-1);
 
+	printf("done\n");
 }
